@@ -13,6 +13,8 @@ router.get('/:id', auth, async (req, res) => {
     // Get goal by id
     const goal = await Goal.findById(req.params.id)
     if (!goal) return res.status(400).json({ msg: 'Goal not found' })
+    if (goal.user.toString() !== req.user.id)
+      return res.status(401).json({ msg: 'Unauthorized' })
 
     const children = null
 
@@ -42,11 +44,13 @@ router.post(
 
     try {
       // Get the parent goal
-      const goal = await Goal.findById(req.params.id)
+      let goal = await Goal.findById(req.params.id)
       if (!goal)
         return res
           .status(400)
           .json({ msg: 'Can not attach the new goal to any existing one' })
+      if (goal.user.toString() !== req.user.id)
+        return res.status(401).json({ msg: 'Unauthorized' })
 
       const { title, text, progress, deadline, repeat } = req.body
 
@@ -60,7 +64,7 @@ router.post(
         parent: goal._id
       })
 
-      const goal = await newGoal.save()
+      goal = await newGoal.save()
       goal.goals.push(goal._id)
 
       goal = await goal.save()
@@ -88,6 +92,8 @@ router.put(
       // Get the parent goal
       let goal = await Goal.findById(req.params.id)
       if (!goal) return res.status(400).json({ msg: 'Goal not found' })
+      if (goal.user.toString() !== req.user.id)
+        return res.status(401).json({ msg: 'Unauthorized' })
 
       const { title, text, progress, deadline, repeat } = req.body
 
@@ -115,6 +121,8 @@ router.delete('/:id', auth, async (req, res) => {
     // Get the parent goal
     let goal = await Goal.findById(req.params.id)
     if (!goal) return res.status(400).json({ msg: 'Goal not found' })
+    if (goal.user.toString() !== req.user.id)
+      return res.status(401).json({ msg: 'Unauthorized' })
 
     goal.deleted = true
 

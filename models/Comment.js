@@ -5,9 +5,13 @@ const CommentSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  author: {
+  user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user'
+  },
+  goal: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'goal'
   },
   date: {
     type: String,

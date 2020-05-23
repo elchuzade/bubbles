@@ -7,6 +7,7 @@ const auth = require('../middleware/auth')
 const { check, validationResult } = require('express-validator')
 
 const User = require('../models/User')
+const Goal = require('../models/Goal')
 
 // @route   GET api/users/me
 // @desc    Get logged in user
@@ -104,10 +105,19 @@ router.post(
       })
 
       const salt = await bcrypt.genSalt(10)
-
       user.password = await bcrypt.hash(password, salt)
+      user = await user.save()
+      // Create the first goal
+      const firstGoal = new Goal({
+        title: 'Goals',
+        parent: user._id,
+        user: user._id
+      })
 
-      await user.save()
+      const goal = await firstGoal.save()
+      user.goal = goal
+
+      user.save()
 
       const payload = {
         user: {

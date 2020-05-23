@@ -33,8 +33,7 @@ const GoalSchema = mongoose.Schema({
       'biennially',
       'annually',
       'biannually'
-    ],
-    default: 'daily'
+    ]
   },
   goals: [
     {
@@ -42,16 +41,17 @@ const GoalSchema = mongoose.Schema({
       ref: 'goal'
     }
   ],
-  done: {
-    type: Boolean,
-    default: false
-  },
   comments: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'comment'
     }
   ],
+  done: {
+    type: Boolean,
+    required: true,
+    default: false
+  },
   date: {
     type: String,
     required: true,

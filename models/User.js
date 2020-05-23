@@ -14,12 +14,10 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  goals: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'goal'
-    }
-  ],
+  goal: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'goal'
+  },
   date: {
     type: String,
     required: true,

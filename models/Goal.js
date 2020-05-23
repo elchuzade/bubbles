@@ -21,6 +21,9 @@ const GoalSchema = mongoose.Schema({
   deadline: {
     type: Date
   },
+  progress: {
+    type: Number
+  },
   repeat: {
     type: String,
     enum: [

@@ -3,7 +3,6 @@ const router = express.Router()
 const auth = require('../middleware/auth')
 const { check, validationResult } = require('express-validator')
 
-const User = require('../models/User')
 const Goal = require('../models/Goal')
 
 // @route   GET api/goals/:id
@@ -11,16 +10,15 @@ const Goal = require('../models/Goal')
 // @access  Private
 router.get('/:id', auth, async (req, res) => {
   try {
-    const errors = {}
     // Get goal by id
-    const parent = await Goal.findById(req.params.id)
-    if (!parent) return res.status(400).json({ msg: 'Goal does not exist' })
+    const goal = await Goal.findById(req.params.id)
+    if (!goal) return res.status(400).json({ msg: 'Goal not found' })
 
     const children = null
 
-    if (parent.goals.length > 0) {
+    if (goal.goals.length > 0) {
       // If the goal has immediate children find them all
-      children = await Goal.find({ _id: { $in: parent.goals } })
+      children = await Goal.find({ _id: { $in: goal.goals } })
       if (!children)
         return res.status(400).json({ msg: 'Goal does not have sub goals' })
     }
@@ -44,31 +42,30 @@ router.post(
 
     try {
       // Get the parent goal
-      const parent = await Goal.findById(req.params.id)
-
-      if (!parent)
+      const goal = await Goal.findById(req.params.id)
+      if (!goal)
         return res
           .status(400)
           .json({ msg: 'Can not attach the new goal to any existing one' })
 
-      const { title, text, deadline, repeat } = req.body
+      const { title, text, progress, deadline, repeat } = req.body
 
       const newGoal = new Goal({
         title,
         text,
+        progress,
         deadline,
         repeat,
         user: req.user.id,
-        parent: parent._id
+        parent: goal._id
       })
 
       const goal = await newGoal.save()
+      goal.goals.push(goal._id)
 
-      parent.goals.push(goal._id)
+      goal = await goal.save()
 
-      parent = await parent.save()
-
-      return res.status(200).json(parent)
+      return res.status(200).json(goal)
     } catch (err) {
       console.error(err.message)
       return res.status(500).send('Server Error')
@@ -90,12 +87,13 @@ router.put(
     try {
       // Get the parent goal
       let goal = await Goal.findById(req.params.id)
-      if (!goal) return res.status(400).json({msg: 'Goal not found'})
+      if (!goal) return res.status(400).json({ msg: 'Goal not found' })
 
-      const { title, text, deadline, repeat } = req.body
+      const { title, text, progress, deadline, repeat } = req.body
 
       if (title) goal.title = title
       if (text) goal.text = text
+      if (progress) goal.progress = progress
       if (deadline) goal.deadline = deadline
       if (repeat) goal.repeat = repeat
 
@@ -116,7 +114,7 @@ router.delete('/:id', auth, async (req, res) => {
   try {
     // Get the parent goal
     let goal = await Goal.findById(req.params.id)
-    if (!goal) return res.status(400).json({msg: 'Goal not found'})
+    if (!goal) return res.status(400).json({ msg: 'Goal not found' })
 
     goal.deleted = true
 

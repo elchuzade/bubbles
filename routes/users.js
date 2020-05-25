@@ -69,8 +69,8 @@ router.post(
   }
 )
 
-// @route   POST api/users/register
-// @desc    Register a user
+// @route   POST api/users/signup
+// @desc    Signup a user
 // @access  Public
 router.post(
   '/signup',

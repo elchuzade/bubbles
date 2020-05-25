@@ -1,26 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Fragment } from 'react'
+import './App.css'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import setAuthToken from './utils/setAuthToken'
+import PrivateRoute from './components/routing/PrivateRoute'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import AuthState from './context/auth/AuthState'
+import AlertState from './context/alert/AlertState'
+
+import Signup from './components/auth/Signup'
+import Login from './components/auth/Login'
+
+if (localStorage.token) {
+  setAuthToken(localStorage.token)
 }
 
-export default App;
+const App = () => {
+  return (
+    <AlertState>
+      <AuthState>
+        <Router>
+          <Fragment>
+            <Switch>
+              <Route exact path='/signup' component={Signup} />
+              <Route exact path='/login' component={Login} />
+            </Switch>
+          </Fragment>
+        </Router>
+      </AuthState>
+    </AlertState>
+  )
+}
+
+export default App

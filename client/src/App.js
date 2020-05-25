@@ -1,14 +1,19 @@
 import React, { Fragment } from 'react'
-import './App.css'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+
+import './assets/styles/App.scss'
+
 import setAuthToken from './utils/setAuthToken'
 import PrivateRoute from './components/routing/PrivateRoute'
 
 import AuthState from './context/auth/AuthState'
 import AlertState from './context/alert/AlertState'
+import GoalState from './context/goal/GoalState'
 
-import Signup from './components/auth/Signup'
-import Login from './components/auth/Login'
+import Navbar from './components/layout/Navbar'
+import Signup from './pages/auth/Signup'
+import Login from './pages/auth/Login'
+import Goal from './pages/goal/Goal'
 
 if (localStorage.token) {
   setAuthToken(localStorage.token)
@@ -18,14 +23,18 @@ const App = () => {
   return (
     <AlertState>
       <AuthState>
-        <Router>
-          <Fragment>
-            <Switch>
-              <Route exact path='/signup' component={Signup} />
-              <Route exact path='/login' component={Login} />
-            </Switch>
-          </Fragment>
-        </Router>
+        <GoalState>
+          <Router>
+            <Fragment>
+              <Navbar />
+              <Switch>
+                <Route exact path='/signup' component={Signup} />
+                <Route exact path='/login' component={Login} />
+                <PrivateRoute exact path='/goals/:id' component={Goal} />
+              </Switch>
+            </Fragment>
+          </Router>
+        </GoalState>
       </AuthState>
     </AlertState>
   )

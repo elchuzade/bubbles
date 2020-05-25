@@ -16,7 +16,8 @@ router.get('/:id', auth, async (req, res) => {
     if (goal.user.toString() !== req.user.id)
       return res.status(401).json({ msg: 'Unauthorized' })
 
-    const children = null
+    let children = null
+    let parent = await Goal.findById(goal.parent)
 
     if (goal.goals.length > 0) {
       // If the goal has immediate children find them all
@@ -24,7 +25,7 @@ router.get('/:id', auth, async (req, res) => {
       if (!children)
         return res.status(400).json({ msg: 'Goal does not have sub goals' })
     }
-    return res.status(200).json({ parent, children })
+    return res.status(200).json({ goal, parent, children })
   } catch (err) {
     console.error(err.message)
     res.status(500).send('Server Error')

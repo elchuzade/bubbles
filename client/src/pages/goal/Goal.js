@@ -1,21 +1,33 @@
-import React, { useEffect, useContext } from 'react'
+import React, { Fragment, useEffect, useContext } from 'react'
 import MainGoal from '../../components/goals/MainGoal'
 import MainGoalInfo from '../../components/goals/MainGoalInfo'
 import SubGoals from '../../components/goals/SubGoals'
 import Comments from '../../components/comments/Comments'
 import GoalModal from '../../components/goals/GoalModal'
 import CommentModal from '../../components/comments/CommentModal'
+import Spinner from '../../components/layout/Spinner'
 
 import GoalContext from '../../context/goal/goalContext'
+import AuthContext from '../../context/auth/authContext'
 
-const Goal = () => {
+const Goal = props => {
   const goalContext = useContext(GoalContext)
+  const authContext = useContext(AuthContext)
 
   const { goal, parent, children, loading, getGoal } = goalContext
+  const { user, loadUser } = authContext
+
+  // Load user if not loaded
+  useEffect(() => {
+    if (!user) {
+      loadUser()
+    }
+    // eslint-disable-next-line
+  }, [])
 
   // Get goal
   useEffect(() => {
-    getGoal()
+    getGoal(props.match.params.id)
     // eslint-disable-next-line
   }, [])
 
@@ -37,19 +49,25 @@ const Goal = () => {
 
   return (
     <div className='container'>
-      <div className='row'>
-        <div className='col s12 l6'>
-          <MainGoal />
-        </div>
-        <div className='col s12 l6'>
-          <MainGoalInfo />
-        </div>
-      </div>
-      <SubGoals />
-      <Comments />
-      {/* MODALS */}
-      <GoalModal />
-      <CommentModal />
+      {goal !== null && !loading ? (
+        <Fragment>
+          <div className='row'>
+            <div className='col s12 l6'>
+              <MainGoal />
+            </div>
+            <div className='col s12 l6'>
+              <MainGoalInfo />
+            </div>
+          </div>
+          <SubGoals />
+          <Comments />
+          {/* MODALS */}
+          <GoalModal />
+          <CommentModal />
+        </Fragment>
+      ) : (
+        <Spinner />
+      )}
     </div>
   )
 }

@@ -19,7 +19,7 @@ const AuthState = props => {
     token: localStorage.getItem('token'),
     isAuthenticated: null,
     loading: true,
-    user: {},
+    user: null,
     error: null
   }
 
@@ -74,7 +74,6 @@ const AuthState = props => {
 
     try {
       const res = await axios.post('/api/users/login', formData, config)
-      console.log(res.data)
       dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data

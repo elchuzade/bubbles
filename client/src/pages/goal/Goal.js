@@ -3,8 +3,11 @@ import MainGoal from '../../components/goals/MainGoal'
 import MainGoalInfo from '../../components/goals/MainGoalInfo'
 import SubGoals from '../../components/goals/SubGoals'
 import Comments from '../../components/comments/Comments'
+
 import GoalModal from '../../components/goals/GoalModal'
+import GoalAvatarModal from '../../components/goals/GoalAvatarModal'
 import CommentModal from '../../components/comments/CommentModal'
+
 import Spinner from '../../components/layout/Spinner'
 
 import GoalContext from '../../context/goal/goalContext'
@@ -14,7 +17,19 @@ const Goal = props => {
   const goalContext = useContext(GoalContext)
   const authContext = useContext(AuthContext)
 
-  const { goal, parent, children, loading, getGoal } = goalContext
+  const {
+    goal,
+    parent,
+    children,
+    loading,
+    getGoal,
+    uploadGoalAvatar,
+    deleteGoalAvatar,
+    uploadGoalCroppedAvatar,
+    deleteGoalCroppedAvatar,
+    avatarUploadLoading,
+    avatarDeleteLoading
+  } = goalContext
   const { user, loadUser } = authContext
 
   // Load user if not loaded
@@ -44,6 +59,9 @@ const Goal = props => {
 
     let goalModalDOM = document.getElementById('goalModal')
     M.Modal.init(goalModalDOM, modalSettings)
+
+    let goalAvatarModalDOM = document.getElementById('goalAvatarModal')
+    M.Modal.init(goalAvatarModalDOM, modalSettings)
     // eslint-disable-next-line
   }, [])
 
@@ -65,6 +83,15 @@ const Goal = props => {
           )}
           {/* MODALS */}
           <GoalModal />
+          <GoalAvatarModal
+            goal={goal}
+            uploadGoalAvatar={uploadGoalAvatar}
+            deleteGoalAvatar={deleteGoalAvatar}
+            uploadGoalCroppedAvatar={uploadGoalCroppedAvatar}
+            deleteGoalCroppedAvatar={deleteGoalCroppedAvatar}
+            avatarUploadLoading={avatarUploadLoading}
+            avatarDeleteLoading={avatarDeleteLoading}
+          />
           <CommentModal />
         </Fragment>
       ) : (

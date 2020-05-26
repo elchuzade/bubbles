@@ -32,7 +32,7 @@ const GoalModal = () => {
       </div>
       <div className='modal-footer'>
         <a className='modal-action modal-close waves-effect waves-green btn-flat'>
-          Ok
+          Cancel
         </a>
       </div>
     </div>

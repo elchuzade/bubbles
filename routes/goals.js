@@ -6,6 +6,23 @@ const { check, validationResult } = require('express-validator')
 const Goal = require('../models/Goal')
 const Comment = require('../models/Comment')
 
+// AWS IMAGES
+const aws = require('aws-sdk')
+const config = require('config')
+const upload = require('./files')
+const goalAvatar = upload.uploadGoalAvatar.single('goalAvatar')
+const goalCroppedAvatar = upload.uploadGoalCroppedAvatar.single(
+  'goalCroppedAvatar'
+)
+
+aws.config.update({
+  secretAccessKey: config.get('secretAccessKey'),
+  accessKeyId: config.get('accessKeyId'),
+  region: 'eu-central-1'
+})
+
+const s3 = new aws.S3()
+
 // @route   GET api/goals/:id
 // @desc    Get the parent goal by id and its immediate children
 // @access  Private
@@ -16,7 +33,7 @@ router.get('/:id', auth, async (req, res) => {
     if (!goal) return res.status(400).json({ msg: 'Goal not found' })
     if (goal.user.toString() !== req.user.id)
       return res.status(401).json({ msg: 'Unauthorized' })
-    
+
     let comments = null
     let children = null
     let parent = await Goal.findById(goal.parent)
@@ -144,5 +161,379 @@ router.delete('/:id', auth, async (req, res) => {
     return res.status(500).send('Server Error')
   }
 })
+
+/*
+
+UPLOADING
+
+GOAL
+
+AVATAR
+
+*/
+
+// @route POST api/goals/:id/avatar
+// @desc Upload goal's avatar
+// @access Private
+router.post(
+  '/:id/avatar',
+  auth,
+  (req, res) => {
+    const errors = {}
+    Goal.findById(req.params.id)
+      .then(goal => {
+        if (goal.deleted) {
+          errors.goal = 'Goal is deleted'
+          return res.status(404).json(errors)
+        }
+        // Allow goal owner
+        if (req.user.id !== goal.user.toString()) {
+          errors.authentication = 'Unauthorized'
+          return res.status(400).json(errors)
+        }
+        if (goal.avatar && goal.avatar.key) {
+          // Delete avatar
+          const params = {
+            Bucket: goal.avatar.bucket,
+            Delete: {
+              Objects: [{ Key: goal.avatar.key }]
+            }
+          }
+          s3.deleteObjects(params, (err, data) => {
+            if (err) {
+              console.log(err)
+            } else {
+              // Create avatar
+              goalAvatar(req, res, err => {
+                if (err) {
+                  console.log(err)
+                  errors.uploadfail = 'Failed to upload an image'
+                  return res.json(errors)
+                }
+                if (req.file == undefined) {
+                  console.log(err)
+                  errors.selectfail = 'No file selected'
+                  return res.json(errors)
+                }
+                goal.avatar.location = req.file.location
+                goal.avatar.key = req.file.key
+                goal.avatar.bucket = req.file.bucket
+                goal.avatar.originalname = req.file.originalname
+                goal.avatar.mimetype = req.file.mimetype
+                goal.avatar.size = req.file.size
+                goal.avatar.fieldName = req.file.metadata.fieldName
+                goal
+                  .save()
+                  .then(savedGoal =>
+                    res.status(200).json({
+                      item: savedGoal.avatar,
+                      source: 'goalAvatar',
+                      status: 'success',
+                      message: 'Updated Goal avatar Successfully!'
+                    })
+                  )
+                  .catch(err => {
+                    console.log(err)
+                    errors.goal = 'Goal not saved'
+                    return res.status(404).json(errors)
+                  })
+              })
+            }
+          })
+        } else {
+          // Create avatar
+          goalAvatar(req, res, err => {
+            if (err) {
+              console.log(err)
+              errors.uploadfail = 'Failed to upload an image'
+              return res.json(errors)
+            }
+            if (req.file == undefined) {
+              console.log(err)
+              errors.selectfail = 'No file selected'
+              return res.json(errors)
+            }
+            goal.avatar.location = req.file.location
+            goal.avatar.key = req.file.key
+            goal.avatar.bucket = req.file.bucket
+            goal.avatar.originalname = req.file.originalname
+            goal.avatar.mimetype = req.file.mimetype
+            goal.avatar.size = req.file.size
+            goal.avatar.fieldName = req.file.metadata.fieldName
+            goal
+              .save()
+              .then(savedGoal =>
+                res.status(200).json({
+                  item: savedGoal.avatar,
+                  source: 'goalAvatar',
+                  status: 'success',
+                  message: 'Added goal avatar successfully!'
+                })
+              )
+              .catch(err => {
+                console.log(err)
+                errors.goal = 'Goal not saved'
+                return res.status(404).json(errors)
+              })
+          })
+        }
+      })
+      .catch(err => {
+        console.log(err)
+        errors.goal = 'Goal not found'
+        return res.status(404).json(errors)
+      })
+  }
+)
+
+// @route POST api/goals/:id/croppedAvatar
+// @desc Upload goal's croppedAvatar
+// @access Private
+router.post(
+  '/:id/croppedAvatar',
+  auth,
+  (req, res) => {
+    const errors = {}
+    Goal.findById(req.params.id)
+      .then(goal => {
+        if (goal.deleted) {
+          errors.goal = 'Goal is deleted'
+          return res.status(404).json(errors)
+        }
+        // Allow goal owner
+        if (req.user.id !== goal.user.toString()) {
+          errors.authentication = 'Unauthorized'
+          return res.status(400).json(errors)
+        }
+        if (goal.croppedAvatar && goal.croppedAvatar.key) {
+          // Delete croppedAvatar
+          const params = {
+            Bucket: goal.croppedAvatar.bucket,
+            Delete: {
+              Objects: [{ Key: goal.croppedAvatar.key }]
+            }
+          }
+          s3.deleteObjects(params, (err, data) => {
+            if (err) {
+              console.log(err)
+            } else {
+              // Create croppedAvatar
+              goalCroppedAvatar(req, res, err => {
+                if (err) {
+                  console.log(err)
+                  errors.uploadfail = 'Failed to upload an image'
+                  return res.json(errors)
+                }
+                if (req.file == undefined) {
+                  console.log(err)
+                  errors.selectfail = 'No file selected'
+                  return res.json(errors)
+                }
+                let crop = {
+                  x: req.body.cropX,
+                  y: req.body.cropY,
+                  aspect: req.body.cropAspect,
+                  zoom: req.body.cropZoom
+                }
+                goal.croppedAvatar.crop = crop
+                goal.croppedAvatar.location = req.file.location
+                goal.croppedAvatar.key = req.file.key
+                goal.croppedAvatar.bucket = req.file.bucket
+                goal.croppedAvatar.originalname = req.file.originalname
+                goal.croppedAvatar.mimetype = req.file.mimetype
+                goal.croppedAvatar.size = req.file.size
+                goal.croppedAvatar.fieldName = req.file.metadata.fieldName
+                goal
+                  .save()
+                  .then(savedGoal =>
+                    res.status(200).json({
+                      item: savedGoal.croppedAvatar,
+                      source: 'goalCroppedAvatar',
+                      status: 'success',
+                      message: 'Updated Goal Cropped Avatar Successfully!'
+                    })
+                  )
+                  .catch(err => {
+                    console.log(err)
+                    errors.goal = 'Goal not saved'
+                    return res.status(404).json(errors)
+                  })
+              })
+            }
+          })
+        } else {
+          // Create croppedAvatar
+          goalCroppedAvatar(req, res, err => {
+            if (err) {
+              console.log(err)
+              errors.uploadfail = 'Failed to upload an image'
+              return res.json(errors)
+            }
+            if (req.file == undefined) {
+              console.log(err)
+              errors.selectfail = 'No file selected'
+              return res.json(errors)
+            }
+            let crop = {
+              x: req.body.cropX,
+              y: req.body.cropY,
+              aspect: req.body.cropAspect,
+              zoom: req.body.cropZoom
+            }
+            goal.croppedAvatar.crop = crop
+            goal.croppedAvatar.location = req.file.location
+            goal.croppedAvatar.key = req.file.key
+            goal.croppedAvatar.bucket = req.file.bucket
+            goal.croppedAvatar.originalname = req.file.originalname
+            goal.croppedAvatar.mimetype = req.file.mimetype
+            goal.croppedAvatar.size = req.file.size
+            goal.croppedAvatar.fieldName = req.file.metadata.fieldName
+            goal
+              .save()
+              .then(savedGoal =>
+                res.status(200).json({
+                  item: savedGoal.croppedAvatar,
+                  source: 'goalCroppedAvatar',
+                  status: 'success',
+                  message: 'Added Goal Cropped Avatar Successfully!'
+                })
+              )
+              .catch(err => {
+                console.log(err)
+                errors.goal = 'Goal not saved'
+                return res.status(404).json(errors)
+              })
+          })
+        }
+      })
+      .catch(err => {
+        console.log(err)
+        errors.goal = 'Goal not found'
+        return res.status(404).json(errors)
+      })
+  }
+)
+
+// @route DELETE api/goals/:id/avatar
+// @desc Delete goal's avatar
+// @access Private / Admin
+router.delete(
+  '/:id/avatar',
+  auth,
+  (req, res) => {
+    const errors = {}
+    Goal.findById(req.params.id)
+      .then(goal => {
+        if (goal.deleted) {
+          errors.goal = 'Goal is deleted'
+          return res.status(404).json(errors)
+        }
+        // Allow owner of the goal
+        if (req.user.id !== goal.user) {
+          errors.authentication = 'Unauthorized'
+          return res.status(400).json(errors)
+        }
+        if (goal.avatar && goal.avatar.key) {
+          const params = {
+            Bucket: goal.avatar.bucket,
+            Delete: {
+              Objects: [{ Key: goal.avatar.key }]
+            }
+          }
+          s3.deleteObjects(params, (err, data) => {
+            if (err) {
+              console.log(err)
+            } else {
+              goal.avatar = null
+              goal
+                .save()
+                .then(deletedAvatarGoal =>
+                  res.status(200).json({
+                    item: deletedAvatarGoal,
+                    source: 'goalAvatar',
+                    status: 'success',
+                    message: 'Deleted goal avatar successfully!'
+                  })
+                )
+                .catch(err => {
+                  console.log(err)
+                  errors.goal = 'Goal not saved'
+                  return res.status(404).json(errors)
+                })
+            }
+          })
+        } else {
+          errors.avatar = 'Goal avatar not found'
+          return res.status(404).json(errors)
+        }
+      })
+      .catch(err => {
+        console.log(err)
+        errors.goal = 'Goal not found'
+        return res.status(404).json(errors)
+      })
+  }
+)
+
+// @route DELETE api/goals/:id/croppedAvatar
+// @desc Delete goal's croppedAvatar
+// @access Private / Admin
+router.delete(
+  '/:id/croppedAvatar',
+  auth,
+  (req, res) => {
+    const errors = {}
+    Goal.findById(req.params.id)
+      .then(goal => {
+        if (goal.deleted) {
+          errors.goal = 'Goal is deleted'
+          return res.status(404).json(errors)
+        }
+        // Allow owner of the goal
+        if (req.user.id !== goal.user) {
+          errors.authentication = 'Unauthorized'
+          return res.status(400).json(errors)
+        }
+        if (goal.croppedAvatar && goal.croppedAvatar.key) {
+          const params = {
+            Bucket: goal.croppedAvatar.bucket,
+            Delete: {
+              Objects: [{ Key: goal.croppedAvatar.key }]
+            }
+          }
+          s3.deleteObjects(params, (err, data) => {
+            if (err) {
+              console.log(err)
+            } else {
+              goal.croppedAvatar = null
+              goal
+                .save()
+                .then(deletedCroppedAvatarGoal =>
+                  res.status(200).json({
+                    item: deletedCroppedAvatarGoal,
+                    source: 'goalCroppedAvatar',
+                    status: 'success',
+                    message: 'Deleted goal cropped avatar successfully!'
+                  })
+                )
+                .catch(err => {
+                  console.log(err)
+                  errors.goal = 'Goal not saved'
+                  return res.status(404).json(errors)
+                })
+            }
+          })
+        } else {
+          errors.avatar = 'Goal avatar not found'
+          return res.status(404).json(errors)
+        }
+      })
+      .catch(err => {
+        console.log(err)
+        errors.goal = 'Goal not found'
+        return res.status(404).json(errors)
+      })
+  }
+)
 
 module.exports = router

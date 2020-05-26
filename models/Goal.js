@@ -60,6 +60,66 @@ const GoalSchema = mongoose.Schema({
     required: true,
     default: Date.now
   },
+  avatar: {
+    location: {
+      type: String
+    },
+    key: {
+      type: String
+    },
+    bucket: {
+      type: String
+    },
+    originalname: {
+      type: String
+    },
+    mimetype: {
+      type: String
+    },
+    size: {
+      type: Number
+    },
+    fieldName: {
+      type: String
+    }
+  },
+  croppedAvatar: {
+    crop: {
+      x: {
+        type: Number
+      },
+      y: {
+        type: Number
+      },
+      zoom: {
+        type: Number
+      },
+      aspect: {
+        type: Number
+      }
+    },
+    location: {
+      type: String
+    },
+    key: {
+      type: String
+    },
+    bucket: {
+      type: String
+    },
+    originalname: {
+      type: String
+    },
+    mimetype: {
+      type: String
+    },
+    size: {
+      type: Number
+    },
+    fieldName: {
+      type: String
+    }
+  },
   deleted: {
     type: Boolean,
     required: true,

@@ -11,6 +11,7 @@ export const CLEAR_ERRORS = 'CLEAR_ERRORS'
 
 export const GET_GOAL = 'GET_GOAL'
 export const DONE_GOAL = 'DONE_GOAL'
+export const ADD_GOAL = 'ADD_GOAL'
 
 export const GOAL_ERROR = 'GOAL_ERROR'
 export const GET_GOAL_AVATAR = 'GET_GOAL_AVATAR'

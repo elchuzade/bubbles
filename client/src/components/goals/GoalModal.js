@@ -1,6 +1,33 @@
-import React from 'react'
+import React, { useState, useEffect, useContext } from 'react'
+import GoalContext from '../../context/goal/goalContext'
 
-const GoalModal = ({ goal, setGoal }) => {
+const GoalModal = () => {
+  const goalContext = useContext(GoalContext)
+
+  const [title, setTitle] = useState('')
+  const [text, setText] = useState('')
+  const [deadline, setDeadline] = useState('')
+  const [repeat, setRepeat] = useState('')
+
+  // Initialize modals
+  useEffect(() => {
+    const M = window.M
+
+    let deadlineDatepicker = document.getElementById('goalDeadline')
+    M.Datepicker.init(deadlineDatepicker, {
+      autoClose: true,
+      onSelect: date => setDeadline(date),
+      selectMonths: true,
+      selectYears: 15
+    })
+
+    let repeatSelect = document.getElementById('repeatSelect')
+    M.FormSelect.init(repeatSelect, {})
+    // eslint-disable-next-line
+  }, [])
+
+  const { goal, addGoal } = goalContext
+
   return (
     <div className='modal' id='goalModal'>
       <div className='modal-content'>
@@ -9,8 +36,8 @@ const GoalModal = ({ goal, setGoal }) => {
           <input
             id='name'
             type='text'
-            name={goal.title}
-            onChange={e => setGoal({ ...goal, title: e.target.value })}
+            name={title}
+            onChange={e => setTitle(e.target.value)}
           />
           <label htmlFor='name'>Title</label>
         </div>
@@ -18,8 +45,8 @@ const GoalModal = ({ goal, setGoal }) => {
           <textarea
             className='materialize-textarea'
             id='goal'
-            name={goal.text}
-            onChange={e => setGoal({ ...goal, text: e.target.value })}
+            name={text}
+            onChange={e => setText(e.target.value)}
           />
           <label htmlFor='goal'>Description</label>
         </div>
@@ -28,7 +55,7 @@ const GoalModal = ({ goal, setGoal }) => {
             type='text'
             id='goalDeadline'
             className='datepicker'
-            name={goal.deadline}
+            name={deadline}
           />
           <label htmlFor='goalDeadline'>Deadline</label>
         </div>
@@ -36,14 +63,19 @@ const GoalModal = ({ goal, setGoal }) => {
           <select
             defaultValue=''
             id='repeatSelect'
-            name={goal.repeat}
-            onChange={e => setGoal({ ...goal, repeat: e.target.value })}
+            name={repeat}
+            onChange={e => setRepeat(e.target.value)}
           >
             <option value=''>How Often?</option>
-            <option value='Daily'>Daily</option>
-            <option value='Weekly'>Weekly</option>
-            <option value='Monthly'>Monthly</option>
-            <option value='Annually'>Annually</option>
+            <option value='daily'>Daily</option>
+            <option value='bidiurnally'>Bidiurnally</option>
+            <option value='weekly'>Weekly</option>
+            <option value='biweekly'>Biweekly</option>
+            <option value='monthly'>Monthly</option>
+            <option value='bimonthly'>Bimonthly</option>
+            <option value='biennially'>Biennially</option>
+            <option value='annually'>Annually</option>
+            <option value='biannually'>Biannually</option>
           </select>
           <label>Repeat</label>
         </div>
@@ -51,7 +83,7 @@ const GoalModal = ({ goal, setGoal }) => {
       <div className='modal-footer'>
         <button
           className='btn green waves-effect waves-white'
-          onClick={() => console.log(goal)}
+          onClick={() => addGoal(goal._id, { title, text, deadline, repeat })}
         >
           Save
         </button>

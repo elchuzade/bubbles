@@ -6,6 +6,7 @@ import {
   GET_GOAL,
   GOAL_ERROR,
   DONE_GOAL,
+  ADD_GOAL,
   GET_GOAL_AVATAR,
   GET_GOAL_CROPPED_AVATAR,
   DELETE_GOAL_AVATAR,
@@ -53,6 +54,24 @@ const GoalState = props => {
       dispatch({
         type: DONE_GOAL,
         payload: res.data
+      })
+    } catch (err) {
+      dispatch({ type: GOAL_ERROR })
+    }
+  }
+
+  // Add Goal
+  const addGoal = async (id, goal) => {
+    try {
+      // Will return goal, children
+      const res = await axios.post(`/api/goals/${id}`, goal)
+
+      dispatch({
+        type: ADD_GOAL,
+        payload: {
+          goal: res.data.goal,
+          children: res.data.children
+        }
       })
     } catch (err) {
       dispatch({ type: GOAL_ERROR })
@@ -119,7 +138,7 @@ const GoalState = props => {
       const res = await axios.delete(`/api/goals/${id}/croppedAvatar`)
 
       dispatch({
-        type: DELETE_GOAL_AVATAR,
+        type: DELETE_GOAL_CROPPED_AVATAR,
         payload: res.data.item
       })
     } catch (err) {
@@ -142,7 +161,8 @@ const GoalState = props => {
         uploadGoalCroppedAvatar,
         deleteGoalCroppedAvatar,
         getGoal,
-        doneGoal
+        doneGoal,
+        addGoal
       }}
     >
       {props.children}

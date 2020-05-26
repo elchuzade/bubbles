@@ -1,6 +1,7 @@
 import {
   GET_GOAL,
   DONE_GOAL,
+  ADD_GOAL,
   GET_GOAL_AVATAR,
   GET_GOAL_CROPPED_AVATAR,
   DELETE_GOAL_AVATAR,
@@ -16,6 +17,12 @@ export default (state, action) => {
         parent: action.payload.parent,
         children: action.payload.children,
         loading: false
+      }
+    case ADD_GOAL:
+      return {
+        ...state,
+        goal: action.payload.goal,
+        children: action.payload.children
       }
     case DONE_GOAL:
       return {

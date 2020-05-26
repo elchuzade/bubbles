@@ -66,16 +66,16 @@ router.post('/:id/done', auth, async (req, res) => {
     let goal = await Goal.findById(req.params.id)
 
     if (!goal) return res.status(404).json({ msg: 'Goal not found' })
-    
+
     if (goal.deleted) return res.status(400).json({ msg: 'Goal is deleted' })
-    
+
     if (goal.user.toString() !== req.user.id)
       return res.status(401).json({ msg: 'Unauthorized' })
 
     goal.done = !goal.done
 
     goal = await goal.save()
-    
+
     return res.status(200).json(goal)
   } catch (err) {
     console.error(err.message)
@@ -107,7 +107,7 @@ router.post(
 
       const { title, text, progress, deadline, repeat } = req.body
 
-      const newGoal = new Goal({
+      let newGoal = new Goal({
         title,
         text,
         progress,
@@ -117,12 +117,16 @@ router.post(
         parent: goal._id
       })
 
-      goal = await newGoal.save()
-      goal.goals.push(goal._id)
+      newGoal = await newGoal.save()
+      goal.goals.push(newGoal._id)
 
       goal = await goal.save()
 
-      return res.status(200).json(goal)
+      const children = await Goal.find({ _id: { $in: goal.goals } })
+      if (!children)
+        return res.status(400).json({ msg: 'Goal does not have sub goals' })
+
+      return res.status(200).json({ goal, children })
     } catch (err) {
       console.error(err.message)
       return res.status(500).send('Server Error')

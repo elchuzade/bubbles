@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const Navbar = () => {
   return (
@@ -12,7 +13,7 @@ const Navbar = () => {
             <a href='badges.html'>Main Goal</a>
           </li>
           <li>
-            <a href='collapsible.html'>Login</a>
+            <Link to='/login1'>Login</Link>
           </li>
         </ul>
       </div>

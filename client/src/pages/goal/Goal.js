@@ -30,6 +30,7 @@ const Goal = props => {
     avatarUploadLoading,
     avatarDeleteLoading
   } = goalContext
+  
   const { user, loadUser } = authContext
 
   // Load user if not loaded
@@ -44,7 +45,7 @@ const Goal = props => {
   useEffect(() => {
     getGoal(props.match.params.id)
     // eslint-disable-next-line
-  }, [])
+  }, [props.match.params.id])
 
   // Initialize modals
   useEffect(() => {
@@ -77,7 +78,7 @@ const Goal = props => {
               <MainGoalInfo goal={goal} parent={parent} />
             </div>
           </div>
-          <SubGoals goals={children} />
+          {children && children.length > 0 && <SubGoals goals={children} />}
           {goal.comments && goal.comments.length > 0 && (
             <Comments comments={goal.comments} />
           )}

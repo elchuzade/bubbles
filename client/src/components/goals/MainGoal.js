@@ -1,16 +1,33 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import GoalContext from '../../context/goal/goalContext'
 
-const MainGoal = ({ goal: { croppedAvatar, title, text } }) => {
+const MainGoal = ({ goal: { _id, croppedAvatar, done, title, text } }) => {
+  const goalContext = useContext(GoalContext)
+
+  const { doneGoal } = goalContext
+
   return (
-    <div className='card large blue-grey lighten-4'>
+    <div className={`card large ${done ? ' green ' : ' blue-grey '} lighten-4`}>
       <div className='card-image'>
         <img src={croppedAvatar && croppedAvatar.location} alt='goal avatar' />
       </div>
       <div className='card-content'>
         <p className='right-align goal-parent-buttons'>
-          <button className='btn-floating waves-effect waves-light green mr10'>
-            <i className='material-icons'>done</i>
-          </button>
+          {done ? (
+            <button
+              className='btn-floating waves-effect waves-light brown mr10'
+              onClick={() => doneGoal(_id)}
+            >
+              <i className='material-icons'>clear</i>
+            </button>
+          ) : (
+            <button
+              className='btn-floating waves-effect waves-light green mr10'
+              onClick={() => doneGoal(_id)}
+            >
+              <i className='material-icons'>done</i>
+            </button>
+          )}
           <button
             className='btn-floating waves-effect waves-light orange mr10 modal-trigger'
             href='#goalModal'

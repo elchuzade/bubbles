@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useContext } from 'react'
+import React, { Fragment, useState, useEffect, useContext } from 'react'
 import MainGoal from '../../components/goals/MainGoal'
 import MainGoalInfo from '../../components/goals/MainGoalInfo'
 import SubGoals from '../../components/goals/SubGoals'
@@ -14,6 +14,13 @@ import GoalContext from '../../context/goal/goalContext'
 import AuthContext from '../../context/auth/authContext'
 
 const Goal = props => {
+  const [newGoal, setNewGoal] = useState({
+    title: '',
+    text: '',
+    deadline: '',
+    repeat: ''
+  })
+
   const goalContext = useContext(GoalContext)
   const authContext = useContext(AuthContext)
 
@@ -66,9 +73,16 @@ const Goal = props => {
 
     let deadlineDatepicker = document.getElementById('goalDeadline')
     M.Datepicker.init(deadlineDatepicker, {
+      autoClose: true,
+      onSelect: date => {
+        setNewGoal({ ...goal, deadline: date })
+      },
       selectMonths: true,
       selectYears: 15
     })
+
+    let repeatSelect = document.getElementById('repeatSelect')
+    M.FormSelect.init(repeatSelect, {})
     // eslint-disable-next-line
   }, [])
 
@@ -87,7 +101,7 @@ const Goal = props => {
           <SubGoals goals={children} />
           <Comments comments={goal.comments} />
           {/* MODALS */}
-          <GoalModal />
+          <GoalModal setGoal={setNewGoal} goal={newGoal} />
           <GoalAvatarModal
             goal={goal}
             uploadGoalAvatar={uploadGoalAvatar}

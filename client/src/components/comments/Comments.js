@@ -16,7 +16,7 @@ const Comments = ({ comments }) => {
           </button>
         </h4>
       </div>
-      {comments.map((comment, index) => (
+      {comments && comments.map((comment, index) => (
         <div className='col s12' key={index}>
           <Comment comment={comment} />
         </div>

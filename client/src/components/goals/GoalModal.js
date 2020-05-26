@@ -14,8 +14,8 @@ const GoalModal = () => {
           <label htmlFor='goal'>Description</label>
         </div>
         <div className='input-field'>
-          <input type='text' id='date' className='datepicker' />
-          <label htmlFor='date'>Deadline</label>
+          <input type='text' id='goalDeadline' className='datepicker' />
+          <label htmlFor='goalDeadline'>Deadline</label>
         </div>
         <div className='input-field'>
           <select>

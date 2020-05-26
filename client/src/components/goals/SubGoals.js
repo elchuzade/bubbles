@@ -16,11 +16,12 @@ const SubGoals = ({ goals }) => {
           </button>
         </h4>
       </div>
-      {goals.map((goal, index) => (
-        <div className='col s12 m3' key={index}>
-          <SubGoal goal={goal} />
-        </div>
-      ))}
+      {goals &&
+        goals.map((goal, index) => (
+          <div className='col s12 m3' key={index}>
+            <SubGoal goal={goal} />
+          </div>
+        ))}
     </div>
   )
 }

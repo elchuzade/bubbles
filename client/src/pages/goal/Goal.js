@@ -30,7 +30,7 @@ const Goal = props => {
     avatarUploadLoading,
     avatarDeleteLoading
   } = goalContext
-  
+
   const { user, loadUser } = authContext
 
   // Load user if not loaded
@@ -63,6 +63,12 @@ const Goal = props => {
 
     let goalAvatarModalDOM = document.getElementById('goalAvatarModal')
     M.Modal.init(goalAvatarModalDOM, modalSettings)
+
+    let deadlineDatepicker = document.getElementById('goalDeadline')
+    M.Datepicker.init(deadlineDatepicker, {
+      selectMonths: true,
+      selectYears: 15
+    })
     // eslint-disable-next-line
   }, [])
 
@@ -78,10 +84,8 @@ const Goal = props => {
               <MainGoalInfo goal={goal} parent={parent} />
             </div>
           </div>
-          {children && children.length > 0 && <SubGoals goals={children} />}
-          {goal.comments && goal.comments.length > 0 && (
-            <Comments comments={goal.comments} />
-          )}
+          <SubGoals goals={children} />
+          <Comments comments={goal.comments} />
           {/* MODALS */}
           <GoalModal />
           <GoalAvatarModal

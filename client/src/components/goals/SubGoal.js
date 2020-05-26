@@ -4,7 +4,7 @@ const SubGoal = ({ goal: { avatar, title, text } }) => {
   return (
     <div className='card blue-grey lighten-4 z-depth-1'>
       <div className='card-image waves-effect waves-light waves-block'>
-        <img className='activator' src={avatar} />
+        <img className='activator' src={avatar} alt='sub goal avatar' />
       </div>
       <div className='card-content'>
         <span className='card-title activator'>{title}</span>

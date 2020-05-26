@@ -1,15 +1,15 @@
 import React from 'react'
 
-const MainGoalInfoParent = () => {
+const MainGoalInfoParent = ({ goal: { avatar, title, text } }) => {
   return (
     <div className='card horizontal z-depth-0 goal-parent-goal'>
       <div className='card-image'>
-        <img src='https://picsum.photos/600/480' />
+        <img src={avatar} />
       </div>
       <div className='card-stacked'>
         <div className='card-content'>
-          <span className='card-title'>Move To USA</span>
-          <p>Make yourself a candidate worth being relocated to USA.</p>
+          <span className='card-title'>{title}</span>
+          <p>{text}</p>
         </div>
       </div>
     </div>

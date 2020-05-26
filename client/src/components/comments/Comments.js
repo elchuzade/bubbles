@@ -2,7 +2,7 @@ import React from 'react'
 import mockComments from './mockComments'
 import Comment from './Comment'
 
-const Comments = () => {
+const Comments = ({ comments }) => {
   return (
     <div className='row'>
       <div className='col s12'>
@@ -10,13 +10,13 @@ const Comments = () => {
           Comments
           <button
             className='btn-floating blue waves-effect waves-light modal-trigger ml10'
-            href="#commentModal"
+            href='#commentModal'
           >
             <i className='material-icons'>add</i>
           </button>
         </h4>
       </div>
-      {mockComments.map((comment, index) => (
+      {comments.map((comment, index) => (
         <div className='col s12' key={index}>
           <Comment comment={comment} />
         </div>

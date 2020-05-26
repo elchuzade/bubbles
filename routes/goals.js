@@ -4,6 +4,7 @@ const auth = require('../middleware/auth')
 const { check, validationResult } = require('express-validator')
 
 const Goal = require('../models/Goal')
+const Comment = require('../models/Comment')
 
 // @route   GET api/goals/:id
 // @desc    Get the parent goal by id and its immediate children
@@ -15,9 +16,17 @@ router.get('/:id', auth, async (req, res) => {
     if (!goal) return res.status(400).json({ msg: 'Goal not found' })
     if (goal.user.toString() !== req.user.id)
       return res.status(401).json({ msg: 'Unauthorized' })
-
+    
+    let comments = null
     let children = null
     let parent = await Goal.findById(goal.parent)
+
+    if (goal.comments.length > 0) {
+      comments = await Comment.find({ _id: { $in: goal.comments } })
+      goal.comments = comments
+      if (!comments)
+        return res.status(400).json({ msg: 'Goal does not have comments' })
+    }
 
     if (goal.goals.length > 0) {
       // If the goal has immediate children find them all

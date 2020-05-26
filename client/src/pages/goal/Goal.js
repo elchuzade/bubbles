@@ -53,14 +53,16 @@ const Goal = props => {
         <Fragment>
           <div className='row'>
             <div className='col s12 l6'>
-              <MainGoal />
+              <MainGoal goal={goal} />
             </div>
             <div className='col s12 l6'>
-              <MainGoalInfo />
+              <MainGoalInfo goal={goal} parent={parent} />
             </div>
           </div>
-          <SubGoals />
-          <Comments />
+          <SubGoals goals={children} />
+          {goal.comments && goal.comments.length > 0 && (
+            <Comments comments={goal.comments} />
+          )}
           {/* MODALS */}
           <GoalModal />
           <CommentModal />

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useContext } from 'react'
+import React, { Fragment, useState, useEffect, useContext } from 'react'
 import MainGoal from '../../components/goals/MainGoal'
 import MainGoalInfo from '../../components/goals/MainGoalInfo'
 import SubGoals from '../../components/goals/SubGoals'
@@ -14,6 +14,10 @@ import GoalContext from '../../context/goal/goalContext'
 import AuthContext from '../../context/auth/authContext'
 
 const Goal = props => {
+  const M = window.M
+
+  const [editMode, setEditMode] = useState(false)
+
   const goalContext = useContext(GoalContext)
   const authContext = useContext(AuthContext)
 
@@ -49,7 +53,6 @@ const Goal = props => {
 
   // Initialize modals
   useEffect(() => {
-    const M = window.M
     const modalSettings = {
       dismissible: true,
       inDuration: 300,
@@ -58,27 +61,19 @@ const Goal = props => {
     let commentModalDOM = document.getElementById('commentModal')
     M.Modal.init(commentModalDOM, modalSettings)
 
-    let goalModalDOM = document.getElementById('goalModal')
-    M.Modal.init(goalModalDOM, modalSettings)
-
     let goalAvatarModalDOM = document.getElementById('goalAvatarModal')
     M.Modal.init(goalAvatarModalDOM, modalSettings)
-
-    // let deadlineDatepicker = document.getElementById('goalDeadline')
-    // M.Datepicker.init(deadlineDatepicker, {
-    //   autoClose: true,
-    //   onSelect: date => {
-    //     console.log(newGoal)
-    //     setNewGoal({ ...newGoal, deadline: date })
-    //   },
-    //   selectMonths: true,
-    //   selectYears: 15
-    // })
-
-    // let repeatSelect = document.getElementById('repeatSelect')
-    // M.FormSelect.init(repeatSelect, {})
     // eslint-disable-next-line
   }, [])
+
+  const openGoalModal = async (editMode) => {
+    let goalModalDOM = document.getElementById('goalModal')
+    var instance = M.Modal.getInstance(goalModalDOM);
+
+    await setEditMode(editMode)
+
+    instance.open()
+  }
 
   return (
     <div className='container'>
@@ -86,16 +81,16 @@ const Goal = props => {
         <Fragment>
           <div className='row'>
             <div className='col s12 l6'>
-              <MainGoal goal={goal} />
+              <MainGoal openGoalModal={openGoalModal} goal={goal} />
             </div>
             <div className='col s12 l6'>
               <MainGoalInfo goal={goal} parent={parent} />
             </div>
           </div>
-          <SubGoals goals={children} />
+          <SubGoals openGoalModal={openGoalModal} goals={children} />
           <Comments comments={goal.comments} />
           {/* MODALS */}
-          <GoalModal />
+          <GoalModal editGoal={goal} editMode={editMode} setEditMode={setEditMode} />
           <GoalAvatarModal
             goal={goal}
             uploadGoalAvatar={uploadGoalAvatar}

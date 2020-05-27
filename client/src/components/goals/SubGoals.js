@@ -1,16 +1,15 @@
 import React from 'react'
-import mockSubGoals from './mockSubGoals.js'
 import SubGoal from './SubGoal'
 
-const SubGoals = ({ goals }) => {
+const SubGoals = ({ goals, openGoalModal }) => {
   return (
     <div className='row'>
       <div className='col s12'>
         <h4>
           Goals
           <button
-            className='btn-floating waves-effect waves-light blue modal-trigger ml10'
-            href='#goalModal'
+            className='btn-floating waves-effect waves-light blue ml10'
+            onClick={() => openGoalModal(false)}
           >
             <i className='material-icons'>add</i>
           </button>

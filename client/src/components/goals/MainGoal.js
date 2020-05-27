@@ -2,7 +2,8 @@ import React, { useContext } from 'react'
 import GoalContext from '../../context/goal/goalContext'
 
 const MainGoal = ({
-  goal: { parent, user, _id, croppedAvatar, done, title, text }
+  goal: { parent, user, _id, croppedAvatar, done, title, text },
+  openGoalModal
 }) => {
   const goalContext = useContext(GoalContext)
 
@@ -43,8 +44,8 @@ const MainGoal = ({
               </button>
             )}
             <button
-              className='btn-floating waves-effect waves-light orange mr10 modal-trigger'
-              href='#goalModal'
+              className='btn-floating waves-effect waves-light orange mr10'
+              onClick={() => openGoalModal(true)}
             >
               <i className='material-icons'>edit</i>
             </button>

@@ -118,7 +118,6 @@ const GoalModal = ({ editGoal, editMode, setEditMode }) => {
         </div>
         <div className='input-field'>
           <select
-            defaultValue=''
             id='repeatSelect'
             name={repeat}
             value={repeat}

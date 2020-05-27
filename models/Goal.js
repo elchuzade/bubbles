@@ -6,11 +6,25 @@ const GoalSchema = mongoose.Schema({
     ref: 'user',
     required: true
   },
-  parent: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'goal',
-    required: true
-  },
+  parents: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'goal',
+      required: true
+    }
+  ],
+  children: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'goal'
+    }
+  ],
+  comments: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'comment'
+    }
+  ],
   title: {
     type: String,
     required: true
@@ -38,18 +52,6 @@ const GoalSchema = mongoose.Schema({
       'biannually'
     ]
   },
-  goals: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'goal'
-    }
-  ],
-  comments: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'comment'
-    }
-  ],
   done: {
     type: Boolean,
     required: true,

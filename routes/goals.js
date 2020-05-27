@@ -36,22 +36,29 @@ router.get('/:id', auth, async (req, res) => {
 
     let comments = null
     let children = null
-    let parent = await Goal.findById(goal.parent)
+    let parents = null
 
-    if (goal.comments.length > 0) {
+    if (goal.parents && goal.parents.length > 0) {
+      parents = await Comment.find({ _id: { $in: goal.parents } })
+      goal.parents = parents
+      if (!parents)
+        return res.status(400).json({ msg: 'Goal does not have parents' })
+    }
+
+    if (goal.comments && goal.comments.length > 0) {
       comments = await Comment.find({ _id: { $in: goal.comments } })
       goal.comments = comments
       if (!comments)
         return res.status(400).json({ msg: 'Goal does not have comments' })
     }
 
-    if (goal.goals.length > 0) {
+    if (goal.children && goal.children.length > 0) {
       // If the goal has immediate children find them all
-      children = await Goal.find({ _id: { $in: goal.goals } })
+      children = await Goal.find({ _id: { $in: goal.children } })
       if (!children)
-        return res.status(400).json({ msg: 'Goal does not have sub goals' })
+        return res.status(400).json({ msg: 'Goal does not have children' })
     }
-    return res.status(200).json({ goal, parent, children })
+    return res.status(200).json({ goal, parents, children })
   } catch (err) {
     console.error(err.message)
     res.status(500).send('Server Error')
@@ -114,17 +121,17 @@ router.post(
         deadline,
         repeat,
         user: req.user.id,
-        parent: goal._id
+        parents: [goal._id]
       })
 
       newGoal = await newGoal.save()
-      goal.goals.push(newGoal._id)
+      goal.children.push(newGoal._id)
 
       goal = await goal.save()
 
-      const children = await Goal.find({ _id: { $in: goal.goals } })
+      const children = await Goal.find({ _id: { $in: goal.children } })
       if (!children)
-        return res.status(400).json({ msg: 'Goal does not have sub goals' })
+        return res.status(400).json({ msg: 'Goal does not have children' })
 
       return res.status(200).json({ goal, children })
     } catch (err) {
@@ -192,6 +199,15 @@ router.delete('/:id', auth, async (req, res) => {
     goal.deleted = true
 
     goal = await goal.save()
+
+    let child = null
+    goal.children.forEach(async (childId) => {
+      child = await Goal.findById(childId)
+      if (child.parents.length === 1) {
+        child.deleted = true
+        await child.save()
+      }
+    })
 
     return res.status(200).json(goal)
   } catch (err) {

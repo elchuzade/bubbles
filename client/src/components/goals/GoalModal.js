@@ -55,7 +55,7 @@ const GoalModal = ({ editGoal, editMode, setEditMode }) => {
     // eslint-disable-next-line
   }, [])
 
-  const { goal, addGoal } = goalContext
+  const { goal, addGoal, updateGoal } = goalContext
 
   const deadlineInput = () => {
     return (
@@ -75,7 +75,11 @@ const GoalModal = ({ editGoal, editMode, setEditMode }) => {
   }
 
   const addNewGoal = () => {
-    addGoal(goal._id, { title, text, deadline, repeat })
+    if (editMode) {
+      updateGoal(goal._id, { title, text, deadline, repeat })
+    } else {
+      addGoal(goal._id, { title, text, deadline, repeat })
+    }
     setTitle('')
     setText('')
     setDeadline('')

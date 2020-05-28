@@ -23,7 +23,7 @@ const Goal = props => {
 
   const {
     goal,
-    parent,
+    parents,
     children,
     loading,
     getGoal,
@@ -84,7 +84,7 @@ const Goal = props => {
               <MainGoal openGoalModal={openGoalModal} goal={goal} />
             </div>
             <div className='col s12 l6'>
-              <MainGoalInfo goal={goal} parent={parent} />
+              <MainGoalInfo goal={goal} parents={parents} />
             </div>
           </div>
           <SubGoals openGoalModal={openGoalModal} goals={children} />

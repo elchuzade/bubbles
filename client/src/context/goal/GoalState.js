@@ -7,6 +7,7 @@ import {
   GOAL_ERROR,
   DONE_GOAL,
   ADD_GOAL,
+  UPDATE_GOAL,
   GET_GOAL_AVATAR,
   GET_GOAL_CROPPED_AVATAR,
   DELETE_GOAL_AVATAR,
@@ -16,7 +17,7 @@ import {
 const GoalState = props => {
   const initialState = {
     goal: {},
-    parent: {},
+    parents: [],
     children: [],
     error: null,
     loading: false,
@@ -37,7 +38,7 @@ const GoalState = props => {
         payload: {
           goal: res.data.goal,
           children: res.data.children,
-          parent: res.data.parent
+          parents: res.data.parents
         }
       })
     } catch (err) {
@@ -77,6 +78,23 @@ const GoalState = props => {
       dispatch({ type: GOAL_ERROR })
     }
   }
+
+    // Update Goal
+    const updateGoal = async (id, goal) => {
+      try {
+        // Will return goal, children
+        const res = await axios.put(`/api/goals/${id}`, goal)
+  
+        dispatch({
+          type: UPDATE_GOAL,
+          payload: {
+            goal: res.data.goal
+          }
+        })
+      } catch (err) {
+        dispatch({ type: GOAL_ERROR })
+      }
+    }
 
   // Upload Goal Avatar
   const uploadGoalAvatar = async (id, formData, configData) => {
@@ -162,7 +180,8 @@ const GoalState = props => {
         deleteGoalCroppedAvatar,
         getGoal,
         doneGoal,
-        addGoal
+        addGoal,
+        updateGoal
       }}
     >
       {props.children}

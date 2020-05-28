@@ -171,9 +171,9 @@ router.put(
       if (deadline) goal.deadline = deadline
       if (repeat) goal.repeat = repeat
 
-      goal = await goal.save()
+      savedGoal = await goal.save()
 
-      return res.status(200).json(goal)
+      return res.status(200).json(savedGoal)
     } catch (err) {
       console.error(err.message)
       return res.status(500).send('Server Error')

@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
-import MainGoalInfoParent from './MainGoalInfoParent'
+import MainGoalInfoParents from './MainGoalInfoParents'
 
-const MainGoalInfo = ({ parent, goal: { deadline, repeat, progress } }) => {
+const MainGoalInfo = ({ parents, goal: { deadline, repeat, progress } }) => {
   return (
     <div className='card large white z-depth-1 goal-info-card'>
       <div className='card-content'>
@@ -30,10 +30,10 @@ const MainGoalInfo = ({ parent, goal: { deadline, repeat, progress } }) => {
             </div>
           </li>
         </ul>
-        {parent && (
+        {parents && parents.length > 0 (
           <Fragment>
             <p className='flow-text'>Parent</p>
-            <MainGoalInfoParent goal={parent} />
+            <MainGoalInfoParents goals={parents} />
           </Fragment>
         )}
       </div>

@@ -1,13 +1,13 @@
 import React from 'react'
 
-const CommentModal = () => {
+const NoteModal = () => {
   return (
     <div className='modal' id='commentModal'>
       <div className='modal-content'>
-        <h5 className='mb30'>Add New Comment</h5>
+        <h5 className='mb30'>Add New Note</h5>
         <div className='input-field'>
-          <textarea className='materialize-textarea' id='comment'></textarea>
-          <label htmlFor='comment'>Comment</label>
+          <textarea className='materialize-textarea' id='note'></textarea>
+          <label htmlFor='note'>Note</label>
         </div>
       </div>
       <div className='modal-footer'>
@@ -19,4 +19,4 @@ const CommentModal = () => {
   )
 }
 
-export default CommentModal
+export default NoteModal

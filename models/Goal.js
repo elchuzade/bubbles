@@ -19,10 +19,10 @@ const GoalSchema = mongoose.Schema({
       ref: 'goal'
     }
   ],
-  comments: [
+  notes: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'comment'
+      ref: 'note'
     }
   ],
   title: {

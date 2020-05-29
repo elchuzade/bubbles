@@ -2,11 +2,11 @@ import React, { Fragment, useState, useEffect, useContext } from 'react'
 import MainGoal from '../../components/goals/MainGoal'
 import MainGoalInfo from '../../components/goals/MainGoalInfo'
 import SubGoals from '../../components/goals/SubGoals'
-import Comments from '../../components/comments/Comments'
+import Notes from '../../components/notes/Notes'
 
 import GoalModal from '../../components/goals/GoalModal'
 import GoalAvatarModal from '../../components/goals/GoalAvatarModal'
-import CommentModal from '../../components/comments/CommentModal'
+import NoteModal from '../../components/notes/NoteModal'
 
 import Spinner from '../../components/layout/Spinner'
 
@@ -71,7 +71,7 @@ const Goal = props => {
     toggleGoalModal(false)
   }, [goal])
 
-  const toggleGoalModal = async (open) => {
+  const toggleGoalModal = async open => {
     let goalModalDOM = document.getElementById('goalModal')
     var instance = M.Modal.getInstance(goalModalDOM)
 
@@ -82,7 +82,7 @@ const Goal = props => {
     }
   }
 
-  const toggleGoalAvatarModal = async (open) => {
+  const toggleGoalAvatarModal = async open => {
     let goalAvatarModalDOM = document.getElementById('goalModal')
     var instance = M.Modal.getInstance(goalAvatarModalDOM)
 
@@ -99,14 +99,18 @@ const Goal = props => {
         <Fragment>
           <div className='row'>
             <div className='col s12 l6'>
-              <MainGoal toggleGoalModal={toggleGoalModal} setEditMode={setEditMode} goal={goal} />
+              <MainGoal
+                toggleGoalModal={toggleGoalModal}
+                setEditMode={setEditMode}
+                goal={goal}
+              />
             </div>
             <div className='col s12 l6'>
               <MainGoalInfo goal={goal} parents={parents} />
             </div>
           </div>
           <SubGoals toggleGoalModal={toggleGoalModal} goals={children} />
-          <Comments comments={goal.comments} />
+          <Notes notes={goal.notes} />
           {/* MODALS */}
           <GoalModal
             editGoal={goal}
@@ -122,7 +126,7 @@ const Goal = props => {
             avatarUploadLoading={avatarUploadLoading}
             avatarDeleteLoading={avatarDeleteLoading}
           />
-          <CommentModal />
+          <NoteModal />
         </Fragment>
       ) : (
         <Spinner />

@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Comment = ({ comment: { text } }) => {
+const Note = ({ note: { text } }) => {
   return (
     <div className='card'>
       <div className='card-content'>
@@ -10,4 +10,4 @@ const Comment = ({ comment: { text } }) => {
   )
 }
 
-export default Comment
+export default Note

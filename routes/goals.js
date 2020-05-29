@@ -4,7 +4,7 @@ const auth = require('../middleware/auth')
 const { check, validationResult } = require('express-validator')
 
 const Goal = require('../models/Goal')
-const Comment = require('../models/Comment')
+const Note = require('../models/Note')
 
 // AWS IMAGES
 const aws = require('aws-sdk')
@@ -34,22 +34,22 @@ router.get('/:id', auth, async (req, res) => {
     if (goal.user.toString() !== req.user.id)
       return res.status(401).json({ msg: 'Unauthorized' })
 
-    let comments = null
+    let notes = null
     let children = null
     let parents = null
 
     if (goal.parents && goal.parents.length > 0) {
-      parents = await Comment.find({ _id: { $in: goal.parents } })
+      parents = await Goal.find({ _id: { $in: goal.parents } })
       goal.parents = parents
       if (!parents)
         return res.status(400).json({ msg: 'Goal does not have parents' })
     }
 
-    if (goal.comments && goal.comments.length > 0) {
-      comments = await Comment.find({ _id: { $in: goal.comments } })
-      goal.comments = comments
-      if (!comments)
-        return res.status(400).json({ msg: 'Goal does not have comments' })
+    if (goal.notes && goal.notes.length > 0) {
+      notes = await Note.find({ _id: { $in: goal.notes } })
+      goal.notes = notes
+      if (!notes)
+        return res.status(400).json({ msg: 'Goal does not have notes' })
     }
 
     if (goal.children && goal.children.length > 0) {
@@ -112,14 +112,11 @@ router.post(
       if (goal.user.toString() !== req.user.id)
         return res.status(401).json({ msg: 'Unauthorized' })
 
-      const { title, text, progress, deadline, repeat } = req.body
+      const { title, text } = req.body
 
       let newGoal = new Goal({
         title,
         text,
-        progress,
-        deadline,
-        repeat,
         user: req.user.id,
         parents: [goal._id]
       })
@@ -163,13 +160,10 @@ router.put(
       if (goal.user.toString() !== req.user.id)
         return res.status(401).json({ msg: 'Unauthorized' })
 
-      const { title, text, progress, deadline, repeat } = req.body
+      const { title, text } = req.body
 
       if (title) goal.title = title
       if (text) goal.text = text
-      if (progress) goal.progress = progress
-      if (deadline) goal.deadline = deadline
-      if (repeat) goal.repeat = repeat
 
       savedGoal = await goal.save()
 
@@ -201,7 +195,7 @@ router.delete('/:id', auth, async (req, res) => {
     goal = await goal.save()
 
     let child = null
-    goal.children.forEach(async (childId) => {
+    goal.children.forEach(async childId => {
       child = await Goal.findById(childId)
       if (child.parents.length === 1) {
         child.deleted = true

@@ -1,13 +1,13 @@
 import React from 'react'
-import mockComments from './mockComments'
-import Comment from './Comment'
+import mockNotes from './mockNotes'
+import Note from './Note'
 
-const Comments = ({ comments }) => {
+const Notes = ({ notes }) => {
   return (
     <div className='row'>
       <div className='col s12'>
         <h4>
-          Comments
+          Notes
           <button
             className='btn-floating blue waves-effect waves-light modal-trigger ml10'
             href='#commentModal'
@@ -16,13 +16,14 @@ const Comments = ({ comments }) => {
           </button>
         </h4>
       </div>
-      {comments && comments.map((comment, index) => (
-        <div className='col s12' key={index}>
-          <Comment comment={comment} />
-        </div>
-      ))}
+      {notes &&
+        notes.map((note, index) => (
+          <div className='col s12' key={index}>
+            <Note note={note} />
+          </div>
+        ))}
     </div>
   )
 }
 
-export default Comments
+export default Notes

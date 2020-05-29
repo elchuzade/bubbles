@@ -12,9 +12,7 @@ const MainGoalInfoParent = ({ goal: { _id, croppedAvatar, title, text } }) => {
       </div>
       <div className='card-stacked'>
         <div className='card-content'>
-          <span className='card-title'>
-            <Link to={`/goals/${_id}`}>{title}</Link>
-          </span>
+          <span className='card-title'>{title}</span>
           <p>{text}</p>
         </div>
       </div>

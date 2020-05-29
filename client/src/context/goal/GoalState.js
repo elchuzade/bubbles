@@ -167,7 +167,7 @@ const GoalState = props => {
     <GoalContext.Provider
       value={{
         goal: state.goal,
-        parent: state.parent,
+        parents: state.parents,
         children: state.children,
         error: state.error,
         loading: state.loading,

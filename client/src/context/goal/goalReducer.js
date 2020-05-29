@@ -15,7 +15,7 @@ export default (state, action) => {
       return {
         ...state,
         goal: action.payload.goal,
-        parent: action.payload.parent,
+        parents: action.payload.parents,
         children: action.payload.children,
         loading: false
       }

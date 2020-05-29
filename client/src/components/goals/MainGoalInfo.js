@@ -1,7 +1,14 @@
-import React, { Fragment } from 'react'
-import MainGoalInfoParents from './MainGoalInfoParents'
+import React, { Fragment, useEffect } from 'react'
+import MainGoalInfoParent from './MainGoalInfoParent'
+import { Link } from 'react-router-dom'
 
 const MainGoalInfo = ({ parents, goal: { deadline, repeat, progress } }) => {
+  const M = window.M
+
+  useEffect(() => {
+    var parentCarousel = document.querySelectorAll('.carousel')
+    M.Carousel.init(parentCarousel, {})
+  })
   return (
     <div className='card large white z-depth-1 goal-info-card'>
       <div className='card-content'>
@@ -30,10 +37,16 @@ const MainGoalInfo = ({ parents, goal: { deadline, repeat, progress } }) => {
             </div>
           </li>
         </ul>
-        {parents && parents.length > 0 (
+        {parents && parents.length > 0 && (
           <Fragment>
             <p className='flow-text'>Parent</p>
-            <MainGoalInfoParents goals={parents} />
+            <div class='carousel'>
+              {parents.map((goal, index) => (
+                <Link className='carousel-item' to={`/goals/${goal._id}`} key={index}>
+                  <MainGoalInfoParent goal={goal} />
+                </Link>
+              ))}
+            </div>
           </Fragment>
         )}
       </div>

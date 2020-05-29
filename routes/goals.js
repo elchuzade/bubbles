@@ -175,6 +175,38 @@ router.put(
   }
 )
 
+// @route   PATCH api/goals/:id
+// @desc    Update a goal
+// @access  Private
+router.patch('/:id', auth, async (req, res) => {
+  try {
+    // Get the parent goal
+    let goal = await Goal.findById(req.params.id)
+
+    if (!goal) return res.status(400).json({ msg: 'Goal not found' })
+
+    if (goal.deleted) return res.status(400).json({ msg: 'Goal is deleted' })
+
+    if (goal.user.toString() !== req.user.id)
+      return res.status(401).json({ msg: 'Unauthorized' })
+
+    const { title, text, deadline, repeat, progress } = req.body
+
+    if (title) goal.title = title
+    if (text) goal.text = text
+    if (deadline) goal.deadline = deadline
+    if (repeat) goal.repeat = repeat
+    if (progress) goal.progress = progress
+
+    savedGoal = await goal.save()
+
+    return res.status(200).json(savedGoal)
+  } catch (err) {
+    console.error(err.message)
+    return res.status(500).send('Server Error')
+  }
+})
+
 // @route   DELETE api/goals/:id
 // @desc    Update a goal
 // @access  Private

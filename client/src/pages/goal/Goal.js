@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect, useContext } from 'react'
-import MainGoal from '../../components/goals/MainGoal'
-import MainGoalInfo from '../../components/goals/MainGoalInfo'
+import MainGoal from '../../components/goals/mainGoalSection/mainGoal/MainGoal'
+import MainGoalInfo from '../../components/goals/mainGoalSection/mainGoalInfo/MainGoalInfo'
 import SubGoals from '../../components/goals/SubGoals'
 import Notes from '../../components/notes/Notes'
 
@@ -98,14 +98,14 @@ const Goal = props => {
       {goal !== null && !loading ? (
         <Fragment>
           <div className='row'>
-            <div className='col s12 l6'>
+            <div className='col s12 l5'>
               <MainGoal
                 toggleGoalModal={toggleGoalModal}
                 setEditMode={setEditMode}
                 goal={goal}
               />
             </div>
-            <div className='col s12 l6'>
+            <div className='col s12 l7'>
               <MainGoalInfo goal={goal} parents={parents} />
             </div>
           </div>

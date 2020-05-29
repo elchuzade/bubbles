@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import GoalContext from '../../context/goal/goalContext'
+import GoalContext from '../../../../context/goal/goalContext'
 
 const MainGoal = ({
   goal: { parent, user, _id, croppedAvatar, done, title, text },

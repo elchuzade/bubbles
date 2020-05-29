@@ -79,21 +79,37 @@ const GoalState = props => {
     }
   }
 
-    // Update Goal
-    const updateGoal = async (id, goal) => {
-      try {
-        // Will return goal, children
-        const res = await axios.put(`/api/goals/${id}`, goal)
-        dispatch({
-          type: UPDATE_GOAL,
-          payload: {
-            goal: res.data
-          }
-        })
-      } catch (err) {
-        dispatch({ type: GOAL_ERROR })
-      }
+  // Update Goal
+  const updateGoal = async (id, goal) => {
+    try {
+      // Will return goal, children
+      const res = await axios.put(`/api/goals/${id}`, goal)
+      dispatch({
+        type: UPDATE_GOAL,
+        payload: {
+          goal: res.data
+        }
+      })
+    } catch (err) {
+      dispatch({ type: GOAL_ERROR })
     }
+  }
+
+  // Update specific field of Goal
+  const patchGoal = async (id, goal) => {
+    try {
+      // Will return goal, children
+      const res = await axios.patch(`/api/goals/${id}`, goal)
+      dispatch({
+        type: UPDATE_GOAL,
+        payload: {
+          goal: res.data
+        }
+      })
+    } catch (err) {
+      dispatch({ type: GOAL_ERROR })
+    }
+  }
 
   // Upload Goal Avatar
   const uploadGoalAvatar = async (id, formData, configData) => {
@@ -180,7 +196,8 @@ const GoalState = props => {
         getGoal,
         doneGoal,
         addGoal,
-        updateGoal
+        updateGoal,
+        patchGoal
       }}
     >
       {props.children}

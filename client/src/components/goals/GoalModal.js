@@ -74,16 +74,12 @@ const GoalModal = ({ editGoal, editMode, setEditMode }) => {
     )
   }
 
-  const addNewGoal = () => {
+  const submitGoalModal = () => {
     if (editMode) {
       updateGoal(goal._id, { title, text, deadline, repeat })
     } else {
       addGoal(goal._id, { title, text, deadline, repeat })
     }
-    setTitle('')
-    setText('')
-    setDeadline('')
-    setRepeat('')
   }
 
   return (
@@ -146,7 +142,7 @@ const GoalModal = ({ editGoal, editMode, setEditMode }) => {
       <div className='modal-footer'>
         <button
           className='btn green waves-effect waves-white'
-          onClick={addNewGoal}
+          onClick={submitGoalModal}
         >
           Save
         </button>

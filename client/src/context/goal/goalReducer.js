@@ -28,7 +28,7 @@ export default (state, action) => {
     case UPDATE_GOAL:
       return {
         ...state,
-        goal: action.payload
+        goal: action.payload.goal
       }
     case DONE_GOAL:
       return {

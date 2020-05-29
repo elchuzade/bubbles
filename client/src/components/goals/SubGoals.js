@@ -1,7 +1,7 @@
 import React from 'react'
 import SubGoal from './SubGoal'
 
-const SubGoals = ({ goals, openGoalModal }) => {
+const SubGoals = ({ goals, toggleGoalModal }) => {
   return (
     <div className='row'>
       <div className='col s12'>
@@ -9,7 +9,7 @@ const SubGoals = ({ goals, openGoalModal }) => {
           Goals
           <button
             className='btn-floating waves-effect waves-light blue ml10'
-            onClick={() => openGoalModal(false)}
+            onClick={() => toggleGoalModal(true)}
           >
             <i className='material-icons'>add</i>
           </button>

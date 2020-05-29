@@ -66,13 +66,31 @@ const Goal = props => {
     // eslint-disable-next-line
   }, [])
 
-  const openGoalModal = async (editMode) => {
+  // Check if goal has changed
+  useEffect(() => {
+    toggleGoalModal(false)
+  }, [goal])
+
+  const toggleGoalModal = async (open) => {
     let goalModalDOM = document.getElementById('goalModal')
-    var instance = M.Modal.getInstance(goalModalDOM);
+    var instance = M.Modal.getInstance(goalModalDOM)
 
-    await setEditMode(editMode)
+    if (open) {
+      instance.open()
+    } else {
+      instance.close()
+    }
+  }
 
-    instance.open()
+  const toggleGoalAvatarModal = async (open) => {
+    let goalAvatarModalDOM = document.getElementById('goalModal')
+    var instance = M.Modal.getInstance(goalAvatarModalDOM)
+
+    if (open) {
+      instance.open()
+    } else {
+      instance.close()
+    }
   }
 
   return (
@@ -81,16 +99,20 @@ const Goal = props => {
         <Fragment>
           <div className='row'>
             <div className='col s12 l6'>
-              <MainGoal openGoalModal={openGoalModal} goal={goal} />
+              <MainGoal toggleGoalModal={toggleGoalModal} setEditMode={setEditMode} goal={goal} />
             </div>
             <div className='col s12 l6'>
               <MainGoalInfo goal={goal} parents={parents} />
             </div>
           </div>
-          <SubGoals openGoalModal={openGoalModal} goals={children} />
+          <SubGoals toggleGoalModal={toggleGoalModal} goals={children} />
           <Comments comments={goal.comments} />
           {/* MODALS */}
-          <GoalModal editGoal={goal} editMode={editMode} setEditMode={setEditMode} />
+          <GoalModal
+            editGoal={goal}
+            editMode={editMode}
+            setEditMode={setEditMode}
+          />
           <GoalAvatarModal
             goal={goal}
             uploadGoalAvatar={uploadGoalAvatar}

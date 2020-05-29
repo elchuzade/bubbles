@@ -84,11 +84,10 @@ const GoalState = props => {
       try {
         // Will return goal, children
         const res = await axios.put(`/api/goals/${id}`, goal)
-  
         dispatch({
           type: UPDATE_GOAL,
           payload: {
-            goal: res.data.goal
+            goal: res.data
           }
         })
       } catch (err) {

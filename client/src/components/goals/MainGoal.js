@@ -3,7 +3,8 @@ import GoalContext from '../../context/goal/goalContext'
 
 const MainGoal = ({
   goal: { parent, user, _id, croppedAvatar, done, title, text },
-  openGoalModal
+  toggleGoalModal,
+  setEditMode
 }) => {
   const goalContext = useContext(GoalContext)
 
@@ -45,7 +46,10 @@ const MainGoal = ({
             )}
             <button
               className='btn-floating waves-effect waves-light orange mr10'
-              onClick={() => openGoalModal(true)}
+              onClick={() => {
+                setEditMode(true)
+                toggleGoalModal(true, true)
+              }}
             >
               <i className='material-icons'>edit</i>
             </button>

@@ -30,7 +30,7 @@ const Progress = ({ _id, progress }) => {
   return (
     <Fragment>
       {editProgress ? (
-        <div className='row m0'>
+        <div className='row m0 valign-wrapper w100'>
           <div className='col s8'>
             <div className='goal-info-card-progress-input'>
               <span className='goal-info-card-progress-left grey-text'>0</span>
@@ -55,7 +55,7 @@ const Progress = ({ _id, progress }) => {
             </div>
             <p className='range-field m0 mt10'>
               <input
-                className="browser-default"
+                className='browser-default'
                 type='range'
                 id='progressInput'
                 min='0'
@@ -80,44 +80,52 @@ const Progress = ({ _id, progress }) => {
           </div>
         </div>
       ) : (
-        <div className='row m0 valign-wrapper'>
-          {console.log(progressInput)}
+        <div className='row m0 valign-wrapper w100'>
           <div className='col s3'>
             <span className='grey-text'>Progress</span>
           </div>
           <div className='col s6'>
-            <div className='goal-info-card-progress'>
-              <span className='goal-info-card-progress-left grey-text'>0</span>
-              <span
-                className='goal-info-card-progress-center'
-                style={{
-                  left: `${(progressInput.current * 100) / progressInput.max}%`
-                }}
-              >
-                {progressInput.current}
-              </span>
-              <span className='goal-info-card-progress-right grey-text'>
-                {progressInput.max}
-              </span>
-            </div>
-            <div
-              className='progress'
-              style={{ height: '10px', marginTop: '-10px' }}
-            >
-              <div
-                className='determinate'
-                style={{
-                  width: `${(progressInput.current * 100) / progressInput.max}%`
-                }}
-              />
-            </div>
+            {progress && (
+              <Fragment>
+                }
+                <div className='goal-info-card-progress'>
+                  <span className='goal-info-card-progress-left grey-text'>
+                    0
+                  </span>
+                  <span
+                    className='goal-info-card-progress-center'
+                    style={{
+                      left: `${(progressInput.current * 100) /
+                        progressInput.max}%`
+                    }}
+                  >
+                    {progressInput.current}
+                  </span>
+                  <span className='goal-info-card-progress-right grey-text'>
+                    {progressInput.max}
+                  </span>
+                </div>
+                <div
+                  className='progress'
+                  style={{ height: '10px', marginTop: '-10px' }}
+                >
+                  <div
+                    className='determinate'
+                    style={{
+                      width: `${(progressInput.current * 100) /
+                        progressInput.max}%`
+                    }}
+                  />
+                </div>
+              </Fragment>
+            )}
           </div>
           <div className='col s3'>
             <button
               className='btn-flat right'
               onClick={() => setEditProgress(true)}
             >
-              <i className='material-icons'>edit</i>
+              <i className='material-icons'>{progress ? 'edit' : 'add'}</i>
             </button>
           </div>
         </div>

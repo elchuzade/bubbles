@@ -6,30 +6,32 @@ const GoalModal = ({ editGoal, editMode, setEditMode }) => {
   const goalContext = useContext(GoalContext)
 
   const [title, setTitle] = useState('')
-  const [text, setText] = useState('')
+  const [quoteText, setQuoteText] = useState('')
+  const [quoteAuthor, setQuoteAuthor] = useState('')
+  const [quoteStatus, setQuoteStatus] = useState(false)
 
   // Move up filled input labels
   useEffect(() => {
     if (editGoal && editMode) {
       if (editGoal.title) {
         setTitle(editGoal.title)
-        document.getElementById('titleLabel').classList.add('active')
+        let titleLabel = document.getElementById('titleLabel')
+        if (titleLabel) titleLabel.classList.add('active')
       }
-      if (editGoal.title)
-        if (editGoal.text) {
-          setText(editGoal.text)
-          document.getElementById('textLabel').classList.add('active')
+      if (editGoal.quote && editGoal.quote.text)
+        if (editGoal.quote.text) {
+          setQuoteText(editGoal.quote.text)
+          let textLabel = document.getElementById('textLabel')
+          if (textLabel) textLabel.classList.add('active')
+        }
+      if (editGoal.quote && editGoal.quote.author)
+        if (editGoal.quote) {
+          setQuoteAuthor(editGoal.quote.author)
+          let authorLabel = document.getElementById('authorLabel')
+          if (authorLabel) authorLabel.classList.add('active')
         }
     }
   }, [editGoal, editMode])
-
-  // Move down empty input labels
-  useEffect(() => {
-    if (!editGoal || !editMode) {
-      document.getElementById('titleLabel').classList.remove('active')
-      document.getElementById('textLabel').classList.remove('active')
-    }
-  })
 
   // Initialize
   useEffect(() => {
@@ -40,7 +42,8 @@ const GoalModal = ({ editGoal, editMode, setEditMode }) => {
       outDuration: 300,
       onCloseStart: () => {
         setTitle('')
-        setText('')
+        setQuoteText('')
+        setQuoteAuthor('')
         setEditMode(false)
       }
     })
@@ -52,9 +55,15 @@ const GoalModal = ({ editGoal, editMode, setEditMode }) => {
 
   const submitGoalModal = () => {
     if (editMode) {
-      updateGoal(goal._id, { title, text })
+      updateGoal(goal._id, {
+        title,
+        quote: { text: quoteText, author: quoteAuthor }
+      })
     } else {
-      addGoal(goal._id, { title, text })
+      addGoal(goal._id, {
+        title,
+        quote: { text: quoteText, author: quoteAuthor }
+      })
     }
   }
 
@@ -66,7 +75,6 @@ const GoalModal = ({ editGoal, editMode, setEditMode }) => {
           <input
             id='title'
             type='text'
-            name={title}
             value={title}
             onChange={e => setTitle(e.target.value)}
           />
@@ -74,18 +82,41 @@ const GoalModal = ({ editGoal, editMode, setEditMode }) => {
             Title
           </label>
         </div>
+        <div className='switch'>
+          <label>
+            Description
+            <input
+              type='checkbox'
+              onChange={e => setQuoteStatus(!quoteStatus)}
+            />
+            <span className='lever'></span>
+            Quote
+          </label>
+        </div>
         <div className='input-field'>
           <textarea
             className='materialize-textarea'
             id='text'
-            name={text}
-            value={text}
-            onChange={e => setText(e.target.value)}
+            value={quoteText}
+            onChange={e => setQuoteText(e.target.value)}
           />
           <label htmlFor='text' id='textLabel'>
-            Description
+            {quoteStatus ? 'Quote' : 'Description'}
           </label>
         </div>
+        {quoteStatus && (
+          <div className='input-field'>
+            <input
+              id='author'
+              type='text'
+              value={quoteAuthor}
+              onChange={e => setQuoteAuthor(e.target.value)}
+            />
+            <label htmlFor='author' id='authorLabel'>
+              Author
+            </label>
+          </div>
+        )}
       </div>
       <div className='modal-footer'>
         <button
@@ -94,9 +125,9 @@ const GoalModal = ({ editGoal, editMode, setEditMode }) => {
         >
           Save
         </button>
-        <a className='modal-action modal-close waves-effect waves-green btn-flat'>
+        <button className='modal-action modal-close waves-effect waves-green btn-flat'>
           Cancel
-        </a>
+        </button>
       </div>
     </div>
   )

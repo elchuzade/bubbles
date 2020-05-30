@@ -22,13 +22,13 @@ const MainGoalInfo = ({
         className='collection'
         style={{ borderLeft: 'none', borderRight: 'none' }}
       >
-        <li className='collection-item' style={{ height: '80px' }}>
+        <li className='collection-item valign-wrapper' style={{ height: '80px' }}>
           <Deadline _id={_id} deadline={deadline} />
         </li>
-        <li className='collection-item' style={{ height: '80px' }}>
+        <li className='collection-item valign-wrapper' style={{ height: '80px' }}>
           <Repeat _id={_id} repeat={repeat} />
         </li>
-        <li className='collection-item' style={{ height: '80px' }}>
+        <li className='collection-item valign-wrapper' style={{ height: '80px' }}>
           <Progress _id={_id} progress={progress} />
         </li>
       </ul>

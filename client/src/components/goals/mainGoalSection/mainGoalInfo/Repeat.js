@@ -29,7 +29,7 @@ const Repeat = ({ _id, repeat }) => {
   return (
     <Fragment>
       {editRepeat ? (
-        <div className='row m0'>
+        <div className='row m0 valign-wrapper w100'>
           <div className='col s8'>
             <form>
               <select
@@ -47,22 +47,30 @@ const Repeat = ({ _id, repeat }) => {
             </form>
           </div>
           <div className='col s4'>
-            <button className='btn-flat green white-text right' onClick={saveRepeat}>
+            <button
+              className='btn-flat green white-text right'
+              onClick={saveRepeat}
+            >
               <i className='material-icons'>save</i>
             </button>
           </div>
         </div>
       ) : (
-        <div className='row m0 valign-wrapper'>
+        <div className='row m0 valign-wrapper w100'>
           <div className='col s3'>
             <span className='grey-text'>Repeat</span>
           </div>
           <div className='col s6'>
-            <h6 style={{ margin: 0, padding: 0 }}>{repeat}</h6>
+            <h6 style={{ margin: 0, padding: 0 }}>
+              {repeat && repeat.charAt(0).toUpperCase() + repeat.slice(1)}
+            </h6>
           </div>
           <div className='col s3'>
-            <button className='btn-flat right' onClick={() => setEditRepeat(true)}>
-              <i className='material-icons'>edit</i>
+            <button
+              className='btn-flat right'
+              onClick={() => setEditRepeat(true)}
+            >
+              <i className='material-icons'>{repeat ? 'edit' : 'add'}</i>
             </button>
           </div>
         </div>

@@ -31,7 +31,7 @@ const Deadline = ({ _id, deadline }) => {
   return (
     <Fragment>
       {editDeadline ? (
-        <div className='row m0'>
+        <div className='row m0 valign-wrapper w100'>
           <div className='col s8'>
             <input
               type='text'
@@ -50,18 +50,23 @@ const Deadline = ({ _id, deadline }) => {
           </div>
         </div>
       ) : (
-        <div className='row m0 valign-wrapper'>
+        <div className='row m0 valign-wrapper w100'>
           <div className='col s3'>
             <span className='grey-text'>Deadline</span>
           </div>
           <div className='col s6'>
-            <Moment format='D MMM YYYY' withTitle>
-              {deadline}
-            </Moment>
+            {deadline && (
+              <Moment format='D MMM YYYY' withTitle>
+                {deadline}
+              </Moment>
+            )}
           </div>
           <div className='col s3'>
-            <button className='btn-flat right' onClick={() => setEditDeadline(true)}>
-              <i className='material-icons'>edit</i>
+            <button
+              className='btn-flat right'
+              onClick={() => setEditDeadline(true)}
+            >
+              <i className='material-icons'>{deadline ? 'edit' : 'add'}</i>
             </button>
           </div>
         </div>

@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import GoalContext from '../../../../context/goal/goalContext'
 
 const MainGoal = ({
-  goal: { parent, user, _id, croppedAvatar, done, title, text },
+  goal: { parent, user, _id, croppedAvatar, done, title, quote },
   toggleGoalModal,
   setEditMode
 }) => {
@@ -65,7 +65,13 @@ const MainGoal = ({
           </p>
         )}
         <span className='card-title'>{title}</span>
-        <p>{text}</p>
+        {quote && (
+          <blockquote>
+            "{quote.text}"
+            <br />
+            <cite>{quote && quote.author}</cite>
+          </blockquote>
+        )}
       </div>
     </div>
   )

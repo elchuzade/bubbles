@@ -3,6 +3,8 @@ import Moment from 'react-moment'
 import GoalContext from '../../../../context/goal/goalContext'
 
 const Deadline = ({ _id, deadline }) => {
+  const M = window.M
+
   const [editDeadline, setEditDeadline] = useState(false)
   const [deadlineInput, setDeadlineInput] = useState('')
 
@@ -11,9 +13,8 @@ const Deadline = ({ _id, deadline }) => {
   const { patchGoal } = goalContext
 
   useEffect(() => {
-    const M = window.M
-    var deadlineInput = document.querySelectorAll('.datepicker')
-    M.Datepicker.init(deadlineInput, {
+    var deadlineInputDOM = document.querySelectorAll('.datepicker')
+    M.Datepicker.init(deadlineInputDOM, {
       selectMonths: true,
       selectYears: 15,
       onSelect: date => {

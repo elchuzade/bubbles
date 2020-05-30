@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
-import 'react-datepicker/dist/react-datepicker.css'
 import './assets/styles/App.scss'
 
 import setAuthToken from './utils/setAuthToken'

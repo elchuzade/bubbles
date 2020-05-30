@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react'
 import GoalContext from '../../context/goal/goalContext'
-// import DatePicker from 'react-datepicker'
 
 const GoalModal = ({ editGoal, editMode, setEditMode }) => {
+  const M = window.M
   const goalContext = useContext(GoalContext)
 
   const [title, setTitle] = useState('')
@@ -33,12 +33,8 @@ const GoalModal = ({ editGoal, editMode, setEditMode }) => {
 
   // Initialize
   useEffect(() => {
-    const M = window.M
-
-    let repeatSelect = document.getElementById('repeatSelect')
-    M.FormSelect.init(repeatSelect, {})
-
-    const modalSettings = {
+    let goalModalDOM = document.getElementById('goalModal')
+    M.Modal.init(goalModalDOM, {
       dismissible: true,
       inDuration: 300,
       outDuration: 300,
@@ -47,32 +43,12 @@ const GoalModal = ({ editGoal, editMode, setEditMode }) => {
         setText('')
         setEditMode(false)
       }
-    }
-
-    let goalModalDOM = document.getElementById('goalModal')
-    M.Modal.init(goalModalDOM, modalSettings)
+    })
 
     // eslint-disable-next-line
   }, [])
 
   const { goal, addGoal, updateGoal } = goalContext
-
-  // const deadlineInput = () => {
-  //   return (
-  //     <DatePicker
-  //       selected={deadline ? new Date(deadline) : null}
-  //       onFocus={() => {
-  //         document.getElementById('deadlineLabel').classList.add('active')
-  //       }}
-  //       onBlur={() => {
-  //         deadline === '' &&
-  //           document.getElementById('deadlineLabel').classList.remove('active')
-  //       }}
-  //       onChange={date => setDeadline(date)}
-  //       dateFormat='MMMM d, yyyy'
-  //     />
-  //   )
-  // }
 
   const submitGoalModal = () => {
     if (editMode) {

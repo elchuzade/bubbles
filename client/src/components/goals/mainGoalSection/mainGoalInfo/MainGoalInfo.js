@@ -2,14 +2,19 @@ import React, { Fragment, useEffect, useState } from 'react'
 import MainGoalInfoParent from '../../MainGoalInfoParent'
 import { Link } from 'react-router-dom'
 import Deadline from './Deadline'
+import Repeat from './Repeat'
 
-const MainGoalInfo = ({ parents, goal: { _id, deadline, repeat, progress } }) => {
+const MainGoalInfo = ({
+  parents,
+  goal: { _id, deadline, repeat, progress }
+}) => {
+  const M = window.M
+
   const [editRepeat, setEditRepeat] = useState(false)
   const [editProgress, setEditProgress] = useState(false)
   const [repeatInput, setRepeatInput] = useState('')
   const [progressInput, setProgressInput] = useState('')
 
-  const M = window.M
   progress = {
     current: 180,
     max: 200
@@ -29,19 +34,7 @@ const MainGoalInfo = ({ parents, goal: { _id, deadline, repeat, progress } }) =>
           <Deadline _id={_id} deadline={deadline} />
         </li>
         <li className='collection-item' style={{ height: '60px' }}>
-          <div className='row m0 valign-wrapper'>
-            <div className='col s3'>
-              <span className='grey-text'>Repeat</span>
-            </div>
-            <div className='col s6'>
-              <h6 style={{ margin: 0, padding: 0 }}>{repeat}</h6>
-            </div>
-            <div className='col s3'>
-              <button className='btn-flat' onClick={() => setEditRepeat(true)}>
-                <i className='material-icons'>edit</i>
-              </button>
-            </div>
-          </div>
+          <Repeat _id={_id} repeat={repeat} />
         </li>
         <li className='collection-item' style={{ height: '60px' }}>
           <div className='row m0 valign-wrapper'>

@@ -36,7 +36,15 @@ const GoalSchema = mongoose.Schema({
     type: Date
   },
   progress: {
-    type: Number
+    current: {
+      type: Number,
+      required: true,
+      default: 0
+    },
+    max: {
+      type: Number,
+      required: true
+    }
   },
   repeat: {
     type: String,

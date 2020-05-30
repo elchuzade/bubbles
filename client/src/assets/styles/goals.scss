@@ -31,6 +31,28 @@
           right: 0;
           margin-right: -25px;
           top: -10px;
+          &-input {
+            border-radius: 5px;
+            border: 1px solid grey;
+            height: 30px;
+            position: absolute;
+            right: -40px;
+            top: -10px;
+            width: 50px !important;
+            padding-left: 5px;
+          }
+          &-input input {
+            height: 30px !important;
+            margin: 0 !important;
+            font-size: 0.9rem !important;
+            border: none !important;
+          }
+        }
+        // input
+        &-input {
+          font-size: 0.8rem;
+          position: relative;
+          // margin-bottom: 25px;
         }
       }
     }

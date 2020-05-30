@@ -30,7 +30,7 @@ const Repeat = ({ _id, repeat }) => {
     <Fragment>
       {editRepeat ? (
         <div className='row m0'>
-          <div className='col s9'>
+          <div className='col s8'>
             <form>
               <select
                 id='repeatInput'
@@ -46,8 +46,8 @@ const Repeat = ({ _id, repeat }) => {
               </select>
             </form>
           </div>
-          <div className='col s3'>
-            <button className='btn-flat green white-text' onClick={saveRepeat}>
+          <div className='col s4'>
+            <button className='btn-flat green white-text right' onClick={saveRepeat}>
               <i className='material-icons'>save</i>
             </button>
           </div>
@@ -61,7 +61,7 @@ const Repeat = ({ _id, repeat }) => {
             <h6 style={{ margin: 0, padding: 0 }}>{repeat}</h6>
           </div>
           <div className='col s3'>
-            <button className='btn-flat' onClick={() => setEditRepeat(true)}>
+            <button className='btn-flat right' onClick={() => setEditRepeat(true)}>
               <i className='material-icons'>edit</i>
             </button>
           </div>

@@ -12,7 +12,7 @@ const Navbar = () => {
           Goals
         </a>
         <ul id='nav-mobile' className='right hide-on-med-and-down'>
-          <li>{user && <Link to={`goals/${user.goal}`}>Main Goal</Link>}</li>
+          <li>{user && <Link to={`/goals/${user.goal}`}>Main Goal</Link>}</li>
           <li>
             <Link to='/login'>Login</Link>
           </li>

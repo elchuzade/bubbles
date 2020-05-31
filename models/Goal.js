@@ -29,21 +29,23 @@ const GoalSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  text: {
-    type: String
+  quote: {
+    text: {
+      type: String
+    },
+    author: {
+      type: String
+    }
   },
   deadline: {
     type: Date
   },
   progress: {
     current: {
-      type: Number,
-      required: true,
-      default: 0
+      type: Number
     },
     max: {
-      type: Number,
-      required: true
+      type: Number
     }
   },
   repeat: {

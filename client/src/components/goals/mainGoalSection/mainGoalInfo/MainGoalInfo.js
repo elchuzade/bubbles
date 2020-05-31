@@ -22,19 +22,28 @@ const MainGoalInfo = ({
         className='collection'
         style={{ borderLeft: 'none', borderRight: 'none' }}
       >
-        <li className='collection-item valign-wrapper' style={{ height: '80px' }}>
+        <li
+          className='collection-item valign-wrapper'
+          style={{ height: '80px' }}
+        >
           <Deadline _id={_id} deadline={deadline} />
         </li>
-        <li className='collection-item valign-wrapper' style={{ height: '80px' }}>
+        <li
+          className='collection-item valign-wrapper'
+          style={{ height: '80px' }}
+        >
           <Repeat _id={_id} repeat={repeat} />
         </li>
-        <li className='collection-item valign-wrapper' style={{ height: '80px' }}>
+        <li
+          className='collection-item valign-wrapper'
+          style={{ height: '80px' }}
+        >
           <Progress _id={_id} progress={progress} />
         </li>
       </ul>
       {parents && parents.length > 0 && (
         <Fragment>
-          <p className='flow-text'>Parent</p>
+          <p className='ml30'>Parents</p>
           <div className='carousel'>
             {parents.map((goal, index) => (
               <Link

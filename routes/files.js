@@ -27,7 +27,7 @@ const uploadGoalAvatar = multer({
       cb(null, fullPath)
     }
   }),
-  limits: { fileSize: 10000000 },
+  limits: { fileSize: 20000000 },
   fileFilter: function (req, file, cb) {
     checkFileType(file, cb)
   }
@@ -48,7 +48,7 @@ const uploadGoalCroppedAvatar = multer({
       cb(null, fullPath)
     }
   }),
-  limits: { fileSize: 10000000 },
+  limits: { fileSize: 20000000 },
   fileFilter: function (req, file, cb) {
     checkFileType(file, cb)
   }

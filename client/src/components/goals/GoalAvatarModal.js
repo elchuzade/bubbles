@@ -92,7 +92,8 @@ const GoalAvatarModal = props => {
 
   const uploadCroppedAvatar = croppedImage => {
     const fileExtension = extractImageFileExtensionFromBase64(croppedImage)
-    const myFilename = 'previewFile.' + fileExtension
+    const myFilename =
+      `${avatarObject.name.split(/\.(?=[^\.]+$)/)[0]}.` + fileExtension
     const myNewCroppedFile = base64StringToFile(croppedImage, myFilename)
 
     const formData = new FormData()

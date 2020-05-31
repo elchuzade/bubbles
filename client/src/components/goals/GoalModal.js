@@ -11,6 +11,7 @@ const GoalModal = ({ editGoal, editMode, setEditMode }) => {
   const [quoteStatus, setQuoteStatus] = useState(false)
 
   // Move up filled input labels
+  // TODO: Some issue with this initialization. Figure out how to clean it up
   useEffect(() => {
     if (editGoal && editMode) {
       if (editGoal.title) {
@@ -25,13 +26,19 @@ const GoalModal = ({ editGoal, editMode, setEditMode }) => {
           if (textLabel) textLabel.classList.add('active')
         }
       if (editGoal.quote && editGoal.quote.author)
-        if (editGoal.quote) {
+        if (editGoal.quote && !quoteStatus) {
+          setQuoteStatus(!quoteStatus)
           setQuoteAuthor(editGoal.quote.author)
-          let authorLabel = document.getElementById('authorLabel')
-          if (authorLabel) authorLabel.classList.add('active')
         }
     }
   }, [editGoal, editMode])
+
+  // Move up filled input label for author
+  // TODO: Some issue with this initialization. Figure out how to clean it up
+  useEffect(() => {
+    let authorLabel = document.getElementById('authorLabel')
+    if (authorLabel) authorLabel.classList.add('active')
+  }, [editGoal, editMode, quoteStatus])
 
   // Initialize
   useEffect(() => {
@@ -86,6 +93,7 @@ const GoalModal = ({ editGoal, editMode, setEditMode }) => {
           <label>
             Description
             <input
+              checked={quoteStatus}
               type='checkbox'
               onChange={e => setQuoteStatus(!quoteStatus)}
             />

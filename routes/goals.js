@@ -4,6 +4,7 @@ const auth = require('../middleware/auth')
 const { check, validationResult } = require('express-validator')
 
 const Goal = require('../models/Goal')
+const User = require('../models/User')
 const Note = require('../models/Note')
 
 // AWS IMAGES
@@ -22,6 +23,21 @@ aws.config.update({
 })
 
 const s3 = new aws.S3()
+
+// @route   GET api/goals
+// @desc    Get all goals of a current user
+// @access  Private
+router.get('/', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id)
+    const goals = await Goal.find({ _id: { $in: user.goals }})
+    console.log(goals)
+
+  } catch (err) {
+    console.error(err.message)
+    res.status(500).send('Server Error')
+  } 
+})
 
 // @route   GET api/goals/:id
 // @desc    Get the parent goal by id and its immediate children
@@ -112,11 +128,11 @@ router.post(
       if (goal.user.toString() !== req.user.id)
         return res.status(401).json({ msg: 'Unauthorized' })
 
-      const { title, text } = req.body
+      const { title, quote } = req.body
 
       let newGoal = new Goal({
         title,
-        text,
+        quote,
         user: req.user.id,
         parents: [goal._id]
       })
@@ -125,6 +141,12 @@ router.post(
       goal.children.push(newGoal._id)
 
       goal = await goal.save()
+
+      let user = await User.findById(req.user.id)
+
+      user.goals.push(goal._id)
+
+      await user.save()
 
       const children = await Goal.find({ _id: { $in: goal.children } })
       if (!children)
@@ -160,10 +182,10 @@ router.put(
       if (goal.user.toString() !== req.user.id)
         return res.status(401).json({ msg: 'Unauthorized' })
 
-      const { title, text } = req.body
+      const { title, quote } = req.body
 
       if (title) goal.title = title
-      if (text) goal.text = text
+      if (quote) goal.quote = quote
 
       savedGoal = await goal.save()
 
@@ -190,10 +212,10 @@ router.patch('/:id', auth, async (req, res) => {
     if (goal.user.toString() !== req.user.id)
       return res.status(401).json({ msg: 'Unauthorized' })
 
-    const { title, text, deadline, repeat, progress } = req.body
+    const { title, quote, deadline, repeat, progress } = req.body
 
     if (title) goal.title = title
-    if (text) goal.text = text
+    if (quote) goal.quote = quote
     if (deadline) goal.deadline = deadline
     if (repeat) goal.repeat = repeat
     if (progress) goal.progress = progress

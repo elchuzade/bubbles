@@ -22,9 +22,10 @@ const Repeat = ({ _id, repeat }) => {
   }, [editRepeat])
 
   const saveRepeat = () => {
-    setEditRepeat(false)
     if (repeatInput && repeatInput !== 'Repeat')
       patchGoal(_id, { repeat: repeatInput })
+
+    setEditRepeat(false)
   }
   return (
     <Fragment>

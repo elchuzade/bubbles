@@ -87,7 +87,6 @@ const Progress = ({ _id, progress }) => {
           <div className='col s6'>
             {progress && (
               <Fragment>
-                }
                 <div className='goal-info-card-progress'>
                   <span className='goal-info-card-progress-left grey-text'>
                     0

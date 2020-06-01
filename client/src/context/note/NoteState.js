@@ -6,10 +6,11 @@ import {
   GET_NOTES,
   ADD_NOTE,
   UPDATE_NOTE,
-  DELETE_NOTE
+  DELETE_NOTE,
+  NOTE_ERROR
 } from '../types'
 
-const NoteReducer = props => {
+const NoteState = props => {
   const initialState = {
     notes: []
   }
@@ -38,7 +39,7 @@ const NoteReducer = props => {
       const res = await axios.post(`/api/notes/${id}`, { note })
 
       dispatch({
-        type: GET_NOTES,
+        type: ADD_NOTE,
         payload: res.data
       })
     } catch (err) {
@@ -47,13 +48,13 @@ const NoteReducer = props => {
   }
 
   // Update notes
-  const updateNote = async id => {
+  const updateNote = async (id, note) => {
     try {
       // Will return notes array
       const res = await axios.put(`/api/notes/${id}`, { note })
 
       dispatch({
-        type: UPDATE_NOTES,
+        type: UPDATE_NOTE,
         payload: res.data
       })
     } catch (err) {
@@ -68,7 +69,7 @@ const NoteReducer = props => {
       const res = await axios.delete(`/api/notes/${id}`)
 
       dispatch({
-        type: DELETE_NOTES,
+        type: DELETE_NOTE,
         payload: res.data
       })
     } catch (err) {

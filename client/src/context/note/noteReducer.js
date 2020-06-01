@@ -2,7 +2,8 @@ import {
   GET_NOTES,
   ADD_NOTE,
   UPDATE_NOTE,
-  DELETE_NOTE
+  DELETE_NOTE,
+  NOTE_ERROR
 } from '../types'
 
 export default (state, action) => {

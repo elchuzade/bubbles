@@ -106,7 +106,7 @@ const Goal = props => {
               />
             </div>
             <div className='col s12 l7'>
-              <MainGoalInfo goal={goal} parents={parents} />
+              <MainGoalInfo goal={goal} parents={parents} history={props.history} />
             </div>
           </div>
           <SubGoals toggleGoalModal={toggleGoalModal} goals={children} />
@@ -129,8 +129,8 @@ const Goal = props => {
           <NoteModal />
         </Fragment>
       ) : (
-        <Spinner />
-      )}
+          <Spinner />
+        )}
     </div>
   )
 }

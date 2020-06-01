@@ -48,7 +48,7 @@ const Parents = ({ _id, parents }) => {
       {editParents ? (
         <div className='row m0 valign-wrapper w100'>
           <div className='col s8'>
-            <form>
+            <form className='ml20'>
               <select
                 multiple
                 id='parentsInput'
@@ -56,7 +56,7 @@ const Parents = ({ _id, parents }) => {
                 onChange={addParent}
               >
                 <option value='' disabled>
-                  Repeat
+                  Choose Parents
                 </option>
                 {allGoals.filter(goal => goal._id !== _id).map((goal, index) => <option key={index} value={goal._id}>{goal.title}</option>)}
               </select>
@@ -64,7 +64,7 @@ const Parents = ({ _id, parents }) => {
           </div>
           <div className='col s4'>
             <button
-              className='btn-flat green white-text right'
+              className='btn-flat green white-text right mr20'
               onClick={saveParents}
             >
               <i className='material-icons'>save</i>
@@ -74,14 +74,12 @@ const Parents = ({ _id, parents }) => {
       ) : (
           <div className='row m0 valign-wrapper w100'>
             <div className='col s3'>
-              <span className='grey-text'>Parents</span>
+              <span className='grey-text ml20'>Parents</span>
             </div>
-            <div className='col s6'>
-              "Parents"
-            </div>
+            <div className='col s6' />
             <div className='col s3'>
               <button
-                className='btn-flat right'
+                className='btn-flat right mr20'
                 onClick={() => setEditParents(true)}
               >
                 <i className='material-icons'>edit</i>

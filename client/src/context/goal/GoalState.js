@@ -3,6 +3,7 @@ import axios from 'axios'
 import GoalContext from './goalContext'
 import goalReducer from './goalReducer'
 import {
+  GET_ALL_GOALS,
   GET_GOAL,
   GOAL_ERROR,
   DONE_GOAL,
@@ -19,6 +20,7 @@ const GoalState = props => {
     goal: {},
     parents: [],
     children: [],
+    allGoals: [],
     error: null,
     loading: false,
     avatarUploadLoading: false,
@@ -40,6 +42,21 @@ const GoalState = props => {
           children: res.data.children,
           parents: res.data.parents
         }
+      })
+    } catch (err) {
+      dispatch({ type: GOAL_ERROR })
+    }
+  }
+
+  // Get All Goals
+  const getAllGoals = async () => {
+    try {
+      // Will return array of goals
+      const res = await axios.get('/api/goals')
+
+      dispatch({
+        type: GET_ALL_GOALS,
+        payload: res.data
       })
     } catch (err) {
       dispatch({ type: GOAL_ERROR })
@@ -100,6 +117,22 @@ const GoalState = props => {
     try {
       // Will return goal, children
       const res = await axios.patch(`/api/goals/${id}`, goal)
+      dispatch({
+        type: UPDATE_GOAL,
+        payload: {
+          goal: res.data
+        }
+      })
+    } catch (err) {
+      dispatch({ type: GOAL_ERROR })
+    }
+  }
+
+  // Updatee goal parents
+  const updateParents = async (id, parents) => {
+    try {
+      // Will return goal, children
+      const res = await axios.post(`/api/goals/${id}/parents`, { parents })
       dispatch({
         type: UPDATE_GOAL,
         payload: {
@@ -185,6 +218,7 @@ const GoalState = props => {
         goal: state.goal,
         parents: state.parents,
         children: state.children,
+        allGoals: state.allGoals,
         error: state.error,
         loading: state.loading,
         avatarUploadLoading: state.avatarUploadLoading,
@@ -197,7 +231,9 @@ const GoalState = props => {
         doneGoal,
         addGoal,
         updateGoal,
-        patchGoal
+        patchGoal,
+        updateParents,
+        getAllGoals
       }}
     >
       {props.children}

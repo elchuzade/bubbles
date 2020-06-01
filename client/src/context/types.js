@@ -10,6 +10,7 @@ export const LOGOUT = 'LOGOUT'
 export const CLEAR_ERRORS = 'CLEAR_ERRORS'
 
 export const GET_GOAL = 'GET_GOAL'
+export const GET_ALL_GOALS = 'GET_ALL_GOALS'
 export const DONE_GOAL = 'DONE_GOAL'
 export const ADD_GOAL = 'ADD_GOAL'
 export const UPDATE_GOAL = 'UPDATE_GOAL'

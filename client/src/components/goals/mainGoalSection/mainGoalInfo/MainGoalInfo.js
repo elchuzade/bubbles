@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import Deadline from './Deadline'
 import Repeat from './Repeat'
 import Progress from './Progress'
+import Parents from './Parents'
 
 const MainGoalInfo = ({
   parents,
@@ -43,8 +44,8 @@ const MainGoalInfo = ({
       </ul>
       {parents && parents.length > 0 && (
         <Fragment>
-          <p className='ml30'>Parents</p>
-          <div className='carousel'>
+          <Parents _id={_id} parents={parents} />
+          <div className='carousel' style={{ height: '100%' }}>
             {parents.map((goal, index) => (
               <Link
                 className='carousel-item'

@@ -7,7 +7,15 @@ const Login = props => {
   const authContext = useContext(AuthContext)
 
   const { setAlert } = alertContext
-  const { login, error, clearErrors, isAuthenticated, user } = authContext
+  const { login, error, clearErrors, isAuthenticated, user, loadUser } = authContext
+
+  // Load user if not loaded
+  useEffect(() => {
+    if (!user) {
+      loadUser()
+    }
+    // eslint-disable-next-line
+  }, [])
 
   useEffect(() => {
     if (error === 'Invalid Credentials') {

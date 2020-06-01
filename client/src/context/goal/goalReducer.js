@@ -1,4 +1,5 @@
 import {
+  GET_ALL_GOALS,
   GET_GOAL,
   DONE_GOAL,
   ADD_GOAL,
@@ -11,6 +12,11 @@ import {
 
 export default (state, action) => {
   switch (action.type) {
+    case GET_ALL_GOALS:
+      return {
+        ...state,
+        allGoals: action.payload
+      }
     case GET_GOAL:
       return {
         ...state,

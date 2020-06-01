@@ -30,13 +30,13 @@ const s3 = new aws.S3()
 router.get('/', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id)
-    const goals = await Goal.find({ _id: { $in: user.goals }})
-    console.log(goals)
+    const goals = await Goal.find({ _id: { $in: user.goals } })
 
+    return res.status(200).json(goals)
   } catch (err) {
     console.error(err.message)
     res.status(500).send('Server Error')
-  } 
+  }
 })
 
 // @route   GET api/goals/:id
@@ -159,6 +159,41 @@ router.post(
     }
   }
 )
+
+// @route   POST api/goals/:id/parents
+// @desc    Update parents of the goal
+// @access  Private
+router.post('/:id/parents', auth, async (req, res) => {
+  try {
+    let goal = await Goal.findById(req.params.id)
+
+    if (!goal) return res.status(400).json({ msg: 'Goal not found' })
+
+    if (goal.deleted) return res.status(400).json({ msg: 'Goal is deleted' })
+
+    if (goal.user.toString() !== req.user.id)
+      return res.status(401).json({ msg: 'Unauthorized' })
+
+    const { parents } = req.body.parents
+
+    let parent = null
+
+    for (let i = 0; i < parents.length; i++) {
+      parent = await Goal.findById(parents[i])
+      parent.children.push(goal._id)
+
+      await parent.save()
+    }
+
+    goal.parents = parents
+    await goal.save()
+
+    return res.status(200).json(goal)
+  } catch (err) {
+    console.error(err.message)
+    return res.status(500).send('Server Error')
+  }
+})
 
 // @route   PUT api/goals/:id
 // @desc    Update a goal

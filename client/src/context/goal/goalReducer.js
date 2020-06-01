@@ -4,6 +4,7 @@ import {
   DONE_GOAL,
   ADD_GOAL,
   UPDATE_GOAL,
+  GOAL_ERROR,
   GET_GOAL_AVATAR,
   GET_GOAL_CROPPED_AVATAR,
   DELETE_GOAL_AVATAR,
@@ -40,6 +41,11 @@ export default (state, action) => {
       return {
         ...state,
         goal: action.payload
+      }
+    case GOAL_ERROR:
+      return {
+        ...state,
+        error: action.payload
       }
     case GET_GOAL_AVATAR:
       return {

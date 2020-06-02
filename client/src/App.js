@@ -17,6 +17,7 @@ import Navbar from './components/layout/Navbar'
 import Signup from './pages/auth/Signup'
 import Login from './pages/auth/Login'
 import Goal from './pages/goal/Goal'
+import BubblesPage from './pages/bubble/BubblesPage'
 
 if (localStorage.token) {
   setAuthToken(localStorage.token)
@@ -32,6 +33,7 @@ const App = () => {
               <Fragment>
                 <Navbar />
                 <Switch>
+                  <Route exact path='/bubbles/:id' component={BubblesPage} />
                   <Route exact path='/signup' component={Signup} />
                   <Route exact path='/login' component={Login} />
                   <PrivateRoute exact path='/goals/:id' component={Goal} />

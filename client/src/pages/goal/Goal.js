@@ -12,6 +12,7 @@ import Spinner from '../../components/layout/Spinner'
 
 import GoalContext from '../../context/goal/goalContext'
 import AuthContext from '../../context/auth/authContext'
+import NoteContext from '../../context/note/noteContext'
 
 const Goal = props => {
   const M = window.M
@@ -20,6 +21,7 @@ const Goal = props => {
 
   const goalContext = useContext(GoalContext)
   const authContext = useContext(AuthContext)
+  const noteContext = useContext(NoteContext)
 
   const {
     goal,

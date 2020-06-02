@@ -5,6 +5,7 @@ import {
   ADD_GOAL,
   UPDATE_GOAL,
   GOAL_ERROR,
+  MOVE_GOALS,
   GET_GOAL_AVATAR,
   GET_GOAL_CROPPED_AVATAR,
   DELETE_GOAL_AVATAR,
@@ -13,6 +14,12 @@ import {
 
 export default (state, action) => {
   switch (action.type) {
+    case MOVE_GOALS:
+      return {
+        ...state,
+        goal: action.payload.goal,
+        children: action.payload.children
+      }
     case GET_ALL_GOALS:
       return {
         ...state,

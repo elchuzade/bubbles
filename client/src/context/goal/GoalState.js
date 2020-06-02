@@ -9,6 +9,7 @@ import {
   DONE_GOAL,
   ADD_GOAL,
   UPDATE_GOAL,
+  MOVE_GOALS,
   GET_GOAL_AVATAR,
   GET_GOAL_CROPPED_AVATAR,
   DELETE_GOAL_AVATAR,
@@ -72,6 +73,23 @@ const GoalState = props => {
       dispatch({
         type: DONE_GOAL,
         payload: res.data
+      })
+    } catch (err) {
+      dispatch({ type: GOAL_ERROR })
+    }
+  }
+
+  // Update positions of goals
+  const moveGoals = async (id, goals) => {
+    try {
+      const res = await axios.pist('/api/goals/move', { goals })
+
+      dispatch({
+        type: MOVE_GOALS,
+        payload: {
+          goal: res.data.goals.find(goal => goal._id === id),
+          children: res.data.goals.filter(goal => goal._id !== id)
+        }
       })
     } catch (err) {
       dispatch({ type: GOAL_ERROR })
@@ -233,7 +251,8 @@ const GoalState = props => {
         updateGoal,
         patchGoal,
         updateParents,
-        getAllGoals
+        getAllGoals,
+        moveGoals
       }}
     >
       {props.children}

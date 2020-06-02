@@ -15,6 +15,7 @@ export const DONE_GOAL = 'DONE_GOAL'
 export const ADD_GOAL = 'ADD_GOAL'
 export const UPDATE_GOAL = 'UPDATE_GOAL'
 export const DELETE_GOAL = 'DELETE_GOAL'
+export const MOVE_GOALS = 'MOVE_GOALS'
 
 export const GOAL_ERROR = 'GOAL_ERROR'
 export const GET_GOAL_AVATAR = 'GET_GOAL_AVATAR'

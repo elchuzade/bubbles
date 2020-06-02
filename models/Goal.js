@@ -25,6 +25,25 @@ const GoalSchema = mongoose.Schema({
       ref: 'note'
     }
   ],
+  importance: {
+    type: Number,
+    default: 30
+  },
+  position: {
+    x: {
+      type: Number
+    },
+    y: {
+      type: Number
+    }
+  },
+  path: [
+    {
+      id: {
+        type: String
+      }
+    }
+  ],
   title: {
     type: String,
     required: true

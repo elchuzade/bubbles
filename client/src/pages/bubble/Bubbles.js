@@ -1,11 +1,18 @@
-import React, { Fragment, useState, useEffect } from 'react'
+import React, { Fragment, useState, useEffect, useContext } from 'react'
 import Draggable from 'react-draggable';
 
 import { PercentToPixel, PixelToPercent } from '../../utils/convertPixelPercent'
 
-const Bubbles = ({ plainDims, goals, setGoals }) => {
+import GoalContext from '../../context/goal/goalContext'
+
+const Bubbles = ({ id, plainDims, goals, setGoals }) => {
+  const goalContext = useContext(GoalContext)
+
+  const { moveGoals } = goalContext
+
   const [hover, setHover] = useState(false)
   const [dragItem, setDragItem] = useState({ id: '', importance: '' })
+
 
   const onStart = (e, id, importance, ui) => {
     e && e.preventDefault()
@@ -26,6 +33,7 @@ const Bubbles = ({ plainDims, goals, setGoals }) => {
     // Update position of the moved bubble
     let movedGoals = goals.map(goal => goal._id === dragItem.id ? { ...goal, position: draggedBubblePosition } : goal)
     setGoals(movedGoals)
+    moveGoals(id, movedGoals)
   }
 
   const hoverOn = () => {

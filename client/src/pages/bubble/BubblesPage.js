@@ -12,8 +12,8 @@ const BubblesPage = props => {
 
   const [goals, setGoals] = useState([])
   const [plainDims, setPlainDims] = useState({
-    leftOffset: undefined,
     topOffset: 64,
+    leftOffset: undefined,
     plainWidth: undefined,
     plainHeight: undefined,
     importanceFactor: undefined,
@@ -66,7 +66,7 @@ const BubblesPage = props => {
     <div>
       <div id="plain">
         <Lines plainDims={plainDims} goal={goals.find(g => g._id === goal._id)} children={goals.filter(g => g._id !== goal._id)} />
-        <Bubbles plainDims={plainDims} goals={goals} setGoals={setGoals} />
+        <Bubbles id={goal._id} plainDims={plainDims} goals={goals} setGoals={setGoals} />
       </div>
     </div>
   )

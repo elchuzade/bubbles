@@ -106,6 +106,31 @@ router.post('/:id/done', auth, async (req, res) => {
   }
 })
 
+// @route   POST api/goals/move
+// @desc    Update goals positions and importance
+// @access  Private
+router.post('/move', auth, async (req, res) => {
+  try {
+    let goal = null
+    let savedGoal = null
+    let savedGoals = []
+    for (let i = 0; i < req.body.goals.length; i++) {
+      goal = await Goal.findById(req.body.goals[i]._id)
+
+      goal.position = req.body.goals[i].position
+      goal.importance = req.body.goals[i].importance
+
+      savedGoal = await goal.save()
+
+      savedGoals.push(savedGoal)
+    }
+    res.status(200).json({ goals: savedGoals })
+  } catch (err) {
+    console.error(err.message)
+    return res.status(500).send('Server Error')
+  }
+})
+
 // @route   POST api/goals/:id
 // @desc    Add new child goal
 // @access  Private
@@ -159,31 +184,6 @@ router.post(
     }
   }
 )
-
-// @route   POST api/goals/positions
-// @desc    Update goals positions
-// @access  Private
-router.post('/positions', auth, async (req, res) => {
-  try {
-    let goal = null
-    let savedGoal = null
-    let savedGoals = []
-    for (let i = 0; i < req.body.goals.length; i++) {
-      goal = await Goal.findById(req.body.goals[i]._id)
-
-      goal.position = req.body.goals[i].position
-      goal.importance = req.body.goals[i].importance
-
-      savedGoal = await goal.save()
-
-      savedGoals.push(savedGoal)
-    }
-    res.status(200).json({ goals: savedGoals })
-  } catch (err) {
-    console.error(err.message)
-    return res.status(500).send('Server Error')
-  }
-})
 
 // @route   POST api/goals/:id/parents
 // @desc    Update parents of the goal

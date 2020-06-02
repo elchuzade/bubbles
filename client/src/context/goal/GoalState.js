@@ -82,7 +82,7 @@ const GoalState = props => {
   // Update positions of goals
   const moveGoals = async (id, goals) => {
     try {
-      const res = await axios.pist('/api/goals/move', { goals })
+      const res = await axios.post('/api/goals/move', { goals })
 
       dispatch({
         type: MOVE_GOALS,

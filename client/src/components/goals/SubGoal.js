@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-const SubGoal = ({ goal: { _id, done, croppedAvatar, title, text } }) => {
+const SubGoal = ({ child: { _id, done, croppedAvatar, title } }) => {
   return (
     <Link to={`/goals/${_id}`}>
       <div

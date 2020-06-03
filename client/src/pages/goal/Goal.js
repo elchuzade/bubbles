@@ -25,8 +25,6 @@ const Goal = props => {
 
   const {
     goal,
-    parents,
-    children,
     loading,
     getGoal,
     uploadGoalAvatar,
@@ -108,10 +106,10 @@ const Goal = props => {
               />
             </div>
             <div className='col s12 l7'>
-              <MainGoalInfo goal={goal} parents={parents} history={props.history} />
+              <MainGoalInfo goal={goal} parents={goal.parents} history={props.history} />
             </div>
           </div>
-          <SubGoals toggleGoalModal={toggleGoalModal} goals={children} />
+          <SubGoals toggleGoalModal={toggleGoalModal} children={goal.children} />
           <Notes notes={goal.notes} />
           {/* MODALS */}
           <GoalModal

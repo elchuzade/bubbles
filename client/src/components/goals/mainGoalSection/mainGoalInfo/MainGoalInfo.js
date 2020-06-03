@@ -7,8 +7,7 @@ import Parents from './Parents'
 
 const MainGoalInfo = ({
   history,
-  parents,
-  goal: { _id, deadline, repeat, progress }
+  goal: { parents, _id, deadline, repeat, progress }
 }) => {
   return (
     <div className='card large white z-depth-1 goal-info-card'>

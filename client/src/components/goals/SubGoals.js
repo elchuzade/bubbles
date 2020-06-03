@@ -1,7 +1,7 @@
 import React from 'react'
 import SubGoal from './SubGoal'
 
-const SubGoals = ({ goals, toggleGoalModal }) => {
+const SubGoals = ({ children, toggleGoalModal }) => {
   return (
     <div className='row'>
       <div className='col s12'>
@@ -15,10 +15,10 @@ const SubGoals = ({ goals, toggleGoalModal }) => {
           </button>
         </h4>
       </div>
-      {goals &&
-        goals.map((goal, index) => (
+      {children &&
+        children.map((child, index) => (
           <div className='col s12 m3' key={index}>
-            <SubGoal goal={goal} />
+            <SubGoal child={child} />
           </div>
         ))}
     </div>

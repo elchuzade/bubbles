@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import GoalContext from '../../../../context/goal/goalContext'
 
 const MainGoal = ({
-  goal: { parent, user, _id, croppedAvatar, done, title, quote },
+  goal: { parents, _id, croppedAvatar, done, title, quote },
   toggleGoalModal,
   setEditMode
 }) => {
@@ -10,7 +10,7 @@ const MainGoal = ({
 
   const { doneGoal } = goalContext
 
-  const mainGoal = parent === user
+  const mainGoal = parents && parents.length === 0
 
   return (
     <div className={`card large ${done ? ' green ' : ' blue-grey '} lighten-4`}>

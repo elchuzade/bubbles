@@ -19,8 +19,6 @@ import {
 const GoalState = props => {
   const initialState = {
     goal: {},
-    parents: [],
-    children: [],
     allGoals: [],
     error: null,
     loading: false,
@@ -38,11 +36,7 @@ const GoalState = props => {
 
       dispatch({
         type: GET_GOAL,
-        payload: {
-          goal: res.data.goal,
-          children: res.data.children,
-          parents: res.data.parents
-        }
+        payload: res.data
       })
     } catch (err) {
       dispatch({ type: GOAL_ERROR })
@@ -84,12 +78,12 @@ const GoalState = props => {
     try {
       const res = await axios.post('/api/goals/move', { goals })
 
+      let goal = res.data.goals.find(goal => goal._id === id)
+      goal.children = res.data.goals.filter(goal => goal._id !== id)
+      
       dispatch({
         type: MOVE_GOALS,
-        payload: {
-          goal: res.data.goals.find(goal => goal._id === id),
-          children: res.data.goals.filter(goal => goal._id !== id)
-        }
+        payload: goal
       })
     } catch (err) {
       dispatch({ type: GOAL_ERROR })
@@ -104,10 +98,7 @@ const GoalState = props => {
 
       dispatch({
         type: ADD_GOAL,
-        payload: {
-          goal: res.data.goal,
-          children: res.data.children
-        }
+        payload: res.data
       })
     } catch (err) {
       dispatch({ type: GOAL_ERROR })

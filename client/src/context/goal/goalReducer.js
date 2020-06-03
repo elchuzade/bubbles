@@ -17,8 +17,7 @@ export default (state, action) => {
     case MOVE_GOALS:
       return {
         ...state,
-        goal: action.payload.goal,
-        children: action.payload.children
+        goal: action.payload
       }
     case GET_ALL_GOALS:
       return {
@@ -28,16 +27,13 @@ export default (state, action) => {
     case GET_GOAL:
       return {
         ...state,
-        goal: action.payload.goal,
-        parents: action.payload.parents,
-        children: action.payload.children,
+        goal: action.payload,
         loading: false
       }
     case ADD_GOAL:
       return {
         ...state,
-        goal: action.payload.goal,
-        children: action.payload.children
+        goal: action.payload,
       }
     case UPDATE_GOAL:
       return {

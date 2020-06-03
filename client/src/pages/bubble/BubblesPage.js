@@ -41,7 +41,15 @@ const BubblesPage = props => {
 
   useEffect(() => {
     if (Object.keys(goal).length > 0 && goal.children.length > 0) {
-      setGoals([goal, ...goal.children])
+      console.log(goal)
+      let goalsFlatten = [goal]
+      for (let i = 0; i < goal.children.length; i++) {
+        for (let j = 0; j < goal.children[i].children.length; j++) {
+          goalsFlatten.push(goal.children[i].children[j])
+        }
+        goalsFlatten.push(goal.children[i])
+      }
+      setGoals(goalsFlatten)
     }
   }, [goal])
 
@@ -57,7 +65,7 @@ const BubblesPage = props => {
       leftOffset: window.innerWidth * 0.05,
       plainWidth: window.innerWidth * 0.9,
       plainHeight: window.innerHeight * 0.8,
-      importanceFactor: window.innerWidth * 0.9 * 0.002
+      importanceFactor: window.innerWidth * 0.9 * 0.001
     });
   };
 

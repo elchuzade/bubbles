@@ -4,10 +4,9 @@ import { Line } from 'react-lineto';
 import { PercentToPixel } from '../../utils/convertPixelPercent'
 
 const Lines = ({ plainDims, goal }) => {
-  const DrawLine = (parent, child, index) => (
-    <Line
+  const DrawLine = (parent, child) => {
+    return (< Line
       zIndex={-1}
-      key={index}
       x0={
         plainDims.leftOffset +
         PercentToPixel(
@@ -30,17 +29,19 @@ const Lines = ({ plainDims, goal }) => {
         plainDims.topOffset +
         PercentToPixel(child.position.y, plainDims.plainHeight)
       }
-    />
-  )
+    />)
+  }
 
   return <Fragment>
     {goal.children && goal.children.map((child, index) =>
-      (<>
-        {DrawLine(goal, child, index)}
+      (<Fragment key={`${index}`}>
+        {DrawLine(goal, child)}
         {child.children.map((grandChild, grandIndex) => (
-          DrawLine(child, grandChild, grandIndex)
+          <Fragment key={`${index}-${grandIndex}`}>
+            {DrawLine(child, grandChild)}
+          </Fragment>
         ))}
-      </>)
+      </Fragment>)
     )}
   </Fragment>
 }

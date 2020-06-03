@@ -39,15 +39,23 @@ const BubblesPage = props => {
     // eslint-disable-next-line
   }, [props.match.params.id])
 
+  const containsObject = (obj, list) => {
+    return list.some(elem => elem._id === obj._id)
+  }
+
   useEffect(() => {
     if (Object.keys(goal).length > 0 && goal.children.length > 0) {
-      console.log(goal)
+
       let goalsFlatten = [goal]
       for (let i = 0; i < goal.children.length; i++) {
         for (let j = 0; j < goal.children[i].children.length; j++) {
-          goalsFlatten.push(goal.children[i].children[j])
+          if (!containsObject(goal.children[i].children[j], goalsFlatten)) {
+            goalsFlatten.push(goal.children[i].children[j])
+          }
         }
-        goalsFlatten.push(goal.children[i])
+        if (!containsObject(goal.children[i], goalsFlatten)) {
+          goalsFlatten.push(goal.children[i])
+        }
       }
       setGoals(goalsFlatten)
     }

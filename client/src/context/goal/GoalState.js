@@ -74,16 +74,13 @@ const GoalState = props => {
   }
 
   // Update positions of goals
-  const moveGoals = async (id, goals) => {
+  const moveGoals = async (parentId, goals) => {
     try {
-      const res = await axios.post('/api/goals/move', { goals })
-
-      let goal = res.data.goals.find(goal => goal._id === id)
-      goal.children = res.data.goals.filter(goal => goal._id !== id)
+      const res = await axios.post('/api/goals/move', { goals, parentId })
 
       dispatch({
         type: MOVE_GOALS,
-        payload: goal
+        payload: res.data
       })
     } catch (err) {
       dispatch({ type: GOAL_ERROR })

@@ -22,7 +22,6 @@ const BubblesPage = props => {
   const { user, loadUser } = authContext
   const {
     goal,
-    children,
     getGoal
   } = goalContext
 
@@ -36,15 +35,15 @@ const BubblesPage = props => {
 
   // Get goal, sets goal, parents and children
   useEffect(() => {
-    getGoal(props.match.params.id)
+    getGoal(props.match.params.id, 2)
     // eslint-disable-next-line
   }, [props.match.params.id])
 
   useEffect(() => {
-    if (Object.keys(goal).length > 0 && children.length > 0) {
-      setGoals([goal, ...children])
+    if (Object.keys(goal).length > 0 && goal.children.length > 0) {
+      setGoals([goal, ...goal.children])
     }
-  }, [goal, children])
+  }, [goal])
 
   useEffect(() => {
     handleResize();
@@ -65,7 +64,7 @@ const BubblesPage = props => {
   return (
     <div>
       <div id="plain">
-        <Lines plainDims={plainDims} goal={goals.find(g => g._id === goal._id)} children={goals.filter(g => g._id !== goal._id)} />
+        <Lines plainDims={plainDims} goal={goal} />
         <Bubbles id={goal._id} plainDims={plainDims} goals={goals} setGoals={setGoals} />
       </div>
     </div>

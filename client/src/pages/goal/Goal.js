@@ -47,7 +47,7 @@ const Goal = props => {
 
   // Get goal, sets goal parents and children
   useEffect(() => {
-    getGoal(props.match.params.id)
+    getGoal(props.match.params.id, 1)
     // eslint-disable-next-line
   }, [props.match.params.id])
 

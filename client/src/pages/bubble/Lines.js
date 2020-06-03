@@ -3,11 +3,10 @@ import { Line } from 'react-lineto';
 
 import { PercentToPixel } from '../../utils/convertPixelPercent'
 
-const Lines = ({ plainDims, goal, children }) => {
+const Lines = ({ plainDims, goal }) => {
   return (
     <Fragment>
-      {console.log(goal)}
-      {children.map((child, index) =>
+      {goal.children && goal.children.map((child, index) =>
         <Line
           zIndex={-1}
           key={index}

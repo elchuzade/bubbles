@@ -29,10 +29,10 @@ const GoalState = props => {
   const [state, dispatch] = useReducer(goalReducer, initialState)
 
   // Get Goal
-  const getGoal = async id => {
+  const getGoal = async (id, depth) => {
     try {
       // Will return { goal, children, parent }
-      const res = await axios.get(`/api/goals/${id}`)
+      const res = await axios.get(`/api/goals/${id}`, { params: { depth } })
 
       dispatch({
         type: GET_GOAL,
@@ -80,7 +80,7 @@ const GoalState = props => {
 
       let goal = res.data.goals.find(goal => goal._id === id)
       goal.children = res.data.goals.filter(goal => goal._id !== id)
-      
+
       dispatch({
         type: MOVE_GOALS,
         payload: goal
